@@ -4,7 +4,7 @@ import CryptoJS from 'crypto-js'
 import styles from './encryption.module.css'
 
 const obfuscateToken = token => {
-  const AES_SECRET_KEY = 'onedrive-vercel-index'
+  const AES_SECRET_KEY = 'VercelDrive'
   const encrypted = CryptoJS.AES.encrypt(token, AES_SECRET_KEY)
   return encrypted.toString()
 }
