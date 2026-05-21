@@ -1,51 +1,48 @@
 import Callout from 'nextra-theme-docs/callout'
 
-# Error on deployment
+# Lỗi khi triển khai
 
-### ItemNotFound
+## ItemNotFound
 
 ```json
 {
   "error": {
     "error": {
       "code": "itemNotFound",
-      "message": "The resource could not be found.",
-      "innerError": {
-        "date": "2022-01-14T09:29:32",
-        "request-id": "7fee4456-abd6-4258-aeb0-4f03ee43bd13",
-        "client-request-id": "7fee4456-abd6-4258-aeb0-4f03ee43bd13"
-      }
+      "message": "The resource could not be found."
     }
   }
 }
 ```
 
-You did not specify a valid directory inside your OneDrive for sharing.
+Lỗi này thường có nghĩa là `BASE_DIRECTORY` không trỏ đến một thư mục OneDrive hợp lệ.
 
-1. You must have a folder in your OneDrive present.
-2. You must define the absolute path of the folder under `baseDirectory` in `site.config.js`.
+Hãy kiểm tra:
 
-<Callout emoji="💬">
-Related discussions:
-- [这是啥问题？#274](https://github.com/Astear17/VercelDrive/discussions/274)
-- [部署完后报错 #240](https://github.com/Astear17/VercelDrive/discussions/240)
+1. Thư mục tồn tại trong tài khoản OneDrive được đặt bằng `USER_PRINCIPAL_NAME`.
+2. `BASE_DIRECTORY` bắt đầu bằng `/`.
+3. Tài khoản OAuth là tài khoản sở hữu hoặc có quyền truy cập thư mục đó.
+
+## 403 sau khi triển khai
+
+Ứng dụng chưa có OAuth token hợp lệ hoặc Redis chưa hoạt động.
+
+Hãy kiểm tra:
+
+1. `REDIS_URL` đã có trong biến môi trường production của Vercel.
+2. Dự án đã redeploy sau khi thêm `REDIS_URL`.
+3. OAuth setup đã hoàn tất trên trang đã triển khai.
+
+## Upload bị từ chối quyền
+
+Lỗi này xảy ra khi token OAuth đang lưu chưa có quyền ghi.
+
+<Callout type="warning">
+  Thêm `Files.ReadWrite.All`, xóa token cũ trong Redis/KV, redeploy và xác thực lại.
 </Callout>
 
-### Error 504
+## Error 504
 
-```json
-{ "error": { "code": "504", "message": "An error occurred with your deployment" } }
-```
+504 thường do Microsoft Graph phản hồi chậm, Redis URL không hợp lệ hoặc tải zip thư mục quá lớn cho serverless request.
 
-This may happen for a various reasons, but you definitely f\*cked up some config either in `site.config.js` or set the Redis URL incorrectly.
-
-1. Check `baseDirectory`, previous versions don't have detailed error handling and if you are using a previous version then you may encounter this issue (same solution as the `itemNotFound` issue above)
-2. Check your Redis URL defined in the environment variable in Vercel, which is `REDIS_URL`. **If you are using Upstash, and you enabled SSL,** then the URL may look similar to `rediss://:xxx@us1-xxx.upstash.io:xxx` - notice the `rediss` instead of `redis` and the `://:xx` instead of `://xx`.
-
-<Callout emoji="💬">
-Related discussions:
-- [这种怎么解决啊 #267](https://github.com/Astear17/VercelDrive/discussions/267)
-- [在 Vercel 下部署遇到 504 错误，在本地运行没有问题 #261](https://github.com/Astear17/VercelDrive/discussions/261)
-- [Oops, that's a four-oh-four. #238](https://github.com/Astear17/VercelDrive/discussions/238)
-- [504 Error #247](https://github.com/Astear17/VercelDrive/discussions/247)
-</Callout>
+Kiểm tra `REDIS_URL`, thử lại request và tránh dùng folder zip download cho thư mục rất lớn.

@@ -6,9 +6,10 @@ search: false
 import Bleed from 'nextra-theme-docs/bleed'
 import Features from '../components/features'
 
-<h1 className="text-center font-extrabold md:text-5xl mt-8">VercelDrive</h1>
+<section className="vd-home">
+<h1 className="vd-home-title">VercelDrive</h1>
 
-<p className="text-center text-lg mb-2 text-gray-600 md:text-2xl">
+<p className="vd-home-subtitle">
   Ứng dụng duyệt và tải lên thư mục OneDrive, hỗ trợ bởi Vercel và Next.js.
 </p>
 
@@ -16,12 +17,15 @@ import Features from '../components/features'
   <Features />
 </Bleed>
 
-Hiển thị, chia sẻ, xem trước, tải xuống và tải lên các tệp trong OneDrive của bạn với `VercelDrive`. Thiết lập đơn giản chỉ với một cú nhấp chuột, không cần máy chủ và mã nguồn mở. Bao gồm các tính năng như tải lên bằng cách kéo thả, hỗ trợ tệp lớn, và bảo vệ bằng mật khẩu.
+<p className="vd-home-copy">
+  Hiển thị, chia sẻ, xem trước, tải xuống và tải lên các tệp trong OneDrive của bạn với <code>VercelDrive</code>. Thiết lập đơn giản chỉ với một cú nhấp chuột, không cần máy chủ và mã nguồn mở. Bao gồm các tính năng như tải lên bằng cách kéo thả, hỗ trợ tệp lớn, và bảo vệ bằng mật khẩu.
+</p>
 
-<div className="mt-8 flex flex-wrap justify-center gap-3">
-  <a className="inline-flex items-center rounded-md bg-black px-4 py-2 text-sm font-semibold text-white no-underline dark:bg-white dark:text-black" href="/vi/docs/getting-started">Bắt đầu</a>
-  <a className="inline-flex items-center rounded-md border border-gray-300 px-4 py-2 text-sm font-semibold no-underline dark:border-gray-700" href="/vi/blog/whats-new">Có gì mới</a>
-  <a className="inline-flex items-center rounded-md border border-gray-300 px-4 py-2 text-sm font-semibold no-underline dark:border-gray-700" href="https://github.com/Astear17/VercelDrive">GitHub</a>
+<div className="vd-actions">
+  <a className="vd-button vd-button-primary" href="/vi/docs/getting-started">Bắt đầu</a>
+  <a className="vd-button" href="/vi/blog/whats-new">Có gì mới</a>
+  <a className="vd-button" href="https://github.com/Astear17/VercelDrive">GitHub</a>
 </div>
 
-![Ảnh chụp màn hình demo](../../public/demo.png)
+<img className="vd-demo-image" src="/demo.png" alt="Ảnh demo VercelDrive" />
+</section>

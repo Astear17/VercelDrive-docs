@@ -1,4 +1,3 @@
-import Callout from 'nextra-theme-docs/callout'
 import Video from '../../../components/video'
 
 # Password protected folders
@@ -24,12 +23,12 @@ Suppose we have the following folder structure:
 
 ```
 .
-├── 📕 Books
+├── Books
 │   └── ...
-├── 🌞 Private folder
+├── Private folder
 │   ├── this-is-public
 │   └── u-need-a-password   <-- this is the folder to protect
-├── 🍡 Genshin PV
+├── Media
 │   └── ...
 └── README.md
 ```
@@ -37,25 +36,16 @@ Suppose we have the following folder structure:
 We want to password protect the `/u-need-a-password` directory, so we would write inside `protectedRoutes` the absolute path to root.
 
 ```json
-"protectedRoutes": [
-  "/🌞 Private folder/u-need-a-password",
-],
+NEXT_PUBLIC_PROTECTED_ROUTES=/Private folder/u-need-a-password
 ```
 
-If you want to add another route, then add it to the next item in the array.
+If you want to add another route, separate routes with commas.
 
-```json
-"protectedRoutes": [
-  "/🌞 Private folder/u-need-a-password",
-   "/another/route/for/me/to/protect",
-],
+```text
+NEXT_PUBLIC_PROTECTED_ROUTES=/Private folder/u-need-a-password,/another/protected-folder
 ```
 
-If there is no directory for you to password protect and you want to disable this function, you can simply pass an empty array `[]` to `protectedRoutes`.
-
-```json
-"protectedRoutes": [],
-```
+If there is no directory to protect, do not set `NEXT_PUBLIC_PROTECTED_ROUTES`.
 
 If you are confused about whether you need to encrypt your password, don't. Put that plain text inside `.password`. Whatever you save inside `.password`, you are going to use as the password for entering the protected directory.
 
@@ -67,15 +57,11 @@ Yes, all seemingly secure protections come at a cost.
 
 1. The direct link of the files under your protected directory can be shared with the URL parameter `&odpt=<hashed_token>`, if you really want to:
 
-   ```
-   https://drive.swo.moe/api/raw/?path=/🌞%20Private%20folder/u-need-a-password/watch%20this.mp4&odpt=c8ebdc273d673d167c238dd25a997bdf9b4ecbf589452697c1a6cb416b2ed11d
+   ```text
+   https://your-drive.example/api/raw/?path=/Private%20folder/u-need-a-password/watch%20this.mp4&odpt=<hashed_token>
    ```
 
    Whether or not this exposes your password, protected files, personal information, etc., is all unknown. Use at your own risk.
 
 2. I personally cannot guarantee that this protection is impenetrable and fully secure. Hence, I would not recommend protecting sensitive information with this method. Think of this as an extra layer of annoyance to keep files you want to share with only the people you wish.
 
-<Callout emoji="🗣">
-  More on this in [Password protected routes is now supported
-  #66](https://github.com/Astear17/VercelDrive/discussions/66).
-</Callout>

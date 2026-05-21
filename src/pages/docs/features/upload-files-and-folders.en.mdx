@@ -1,0 +1,36 @@
+# Upload Files And Folders
+
+Uploads are available when VercelDrive is deployed in read/write mode.
+
+## Requirements
+
+- Microsoft Graph delegated permission `Files.ReadWrite.All`
+- `UPLOAD_PASSWORD` set in Vercel
+- Valid OAuth tokens created after the read/write permission was added
+- `REDIS_URL` configured so VercelDrive can store tokens
+
+If you changed from read-only to read/write, clear old Redis/KV tokens and authenticate again.
+
+## How Upload Works
+
+The folder toolbar shows an upload button. After the upload password is accepted, VercelDrive stores a short-lived HTTP-only authorization cookie and checks it on each upload API request.
+
+Users can upload:
+
+- One or more individual files
+- A whole folder in browsers that support folder picking
+- Drag-and-drop files and folders where the browser exposes directory drop APIs
+
+Files are uploaded into the OneDrive folder currently open in the browser. Folder uploads preserve their relative folder paths.
+
+## Large Files
+
+Large files use Microsoft Graph upload sessions. The server creates the upload session with the stored access token, then the browser sends chunks directly to Microsoft's short-lived upload URL.
+
+This avoids buffering entire files inside Vercel functions and keeps Microsoft access tokens server-side.
+
+## Live Photos
+
+iPhone Live Photos usually contain two original files: an image such as HEIC/HEIF and a MOV video. Upload both files together, or upload the exported folder, to preserve the Live Photo components.
+
+VercelDrive does not convert, compress, rename, or strip metadata from selected files.

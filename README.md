@@ -1,1 +1,3 @@
-📘 Documentation for [onedrive-vercel-index](https://github.com/spencerwooo/onedrive-vercel-index).
+# VercelDrive Docs
+
+Documentation for [Astear17/VercelDrive](https://github.com/Astear17/VercelDrive).

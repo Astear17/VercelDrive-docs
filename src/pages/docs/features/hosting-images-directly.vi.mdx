@@ -1,13 +1,15 @@
-# Hosting files (images) directly
+# Host ảnh trực tiếp
 
-Yes, it can be used as an image (or any kind of file) online storage, where the raw file link is exported and can be embedded into your blog or other websites. Images, videos, songs, PDFs..., you name it.
+Bạn có thể dùng raw link của VercelDrive làm URL ảnh trực tiếp.
 
-This GIF below is a sample of a hosted image.
-
-![nyan cat](https://drive.swo.moe/api/raw/?path=/%F0%9F%A5%9F%20Some%20test%20files/nyancat.gif)
-
-You can either copy the direct link from VercelDrive's preview page, or generate your own direct link by adding constructing the URL like so:
-
-```markdown
-![nyan cat](https://drive.swo.moe/api/raw/?path=/%F0%9F%A5%9F%20Some%20test%20files/nyancat.gif)
+```md
+![Example image](https://your-drive.example/api/raw/?path=/Images/photo.png)
 ```
+
+Với dịch vụ yêu cầu URL kết thúc bằng tên file, dùng named route:
+
+```md
+![Example image](https://your-drive.example/api/name/photo.png?path=/Images/photo.png)
+```
+
+Tệp OneDrive phải nằm trong `BASE_DIRECTORY` đã cấu hình, và tệp trong thư mục bảo vệ cần token hợp lệ.

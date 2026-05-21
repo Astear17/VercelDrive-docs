@@ -1,7 +1,7 @@
 # Pagination
 
-This is configured in the `maxItems` inside `config/site.config.js`. Max number of items is 200, limited by the OneDrive API.
+OneDrive trả về thư mục lớn theo từng trang. VercelDrive tự động gọi tiếp API pagination ở nền và nối từng trang khi tải xong, nên người dùng không cần bấm thủ công sau mỗi 200 mục.
+
+OneDrive API vẫn giới hạn mỗi trang ở 200 mục. Khi trang tiếp theo đang tải, VercelDrive hiển thị tiến trình ở cuối danh sách thư mục.
 
 ![Pagination](../_images/showcase/pagination-demo.png)
-
-Demo - [https://drive.swo.moe/🥟 Some test files/Imagenette](https://drive.swo.moe/🥟%20Some%20test%20files/Imagenette).

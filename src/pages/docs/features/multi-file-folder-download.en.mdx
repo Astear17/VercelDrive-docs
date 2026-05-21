@@ -3,17 +3,15 @@ import Video from '../../../components/video'
 
 # Multi-file and folder download
 
-<Callout emoji="⚠️" type="warning">
-  This may be slow in reality. I would suggest using it for only downloading a batch of small files in large quantities,
-  instead of a couple of large files.
+<Callout type="warning">
+  Multi-file downloads are generated in the browser. They work best for many small files. For very large files, direct
+  single-file downloads are more reliable.
 </Callout>
 
 <Video src="/videos/multi-file-folder-download.mp4" ratio={1246 / 2246} />
 
-We use JSZip to download all files in-browser and compress them into file blobs, which are then downloaded to your device as a `zip` file.
+VercelDrive uses JSZip to fetch the selected files in the browser, compress them into a `zip` blob, and save that archive to your device.
 
-This is extremely useful if a series of small files are to be downloaded, but it could be time consuming if used for bulk-downloading a few large files.
+The current downloader validates fetch responses before adding each file to the archive and waits briefly before revoking the generated blob URL. This avoids the common failure where a zip appears to reach a certain percentage and then the browser reports a failed download.
 
 Folders are traversed and recursively fetched into the compressed zip. Multiple files or folders can be selected and downloaded side-by-side.
-
-<Callout emoji="🗣">Discussed in PR #177 and #169.</Callout>

@@ -1,7 +1,7 @@
 # Pagination
 
-This is configured in the `maxItems` inside `config/site.config.js`. Max number of items is 200, limited by the OneDrive API.
+OneDrive returns large folders in pages. VercelDrive automatically follows the API pagination in the background and appends each page as it arrives, so visitors do not need to click through every 200 items manually.
+
+The OneDrive API still limits each page to 200 items. While the next page is loading, VercelDrive shows progress in the folder footer.
 
 ![Pagination](../_images/showcase/pagination-demo.png)
-
-Demo - [https://drive.swo.moe/🥟 Some test files/Imagenette](https://drive.swo.moe/🥟%20Some%20test%20files/Imagenette).

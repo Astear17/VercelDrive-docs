@@ -1,5 +1,6 @@
 import { useRouter } from 'next/router'
-import styles from './features.module.css'
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { faCloudArrowUp, faGaugeHigh, faPalette, faServer } from '@fortawesome/free-solid-svg-icons'
 
 const featureTranslations = {
   en: {
@@ -18,11 +19,18 @@ const featureTranslations = {
 
 export default function Features() {
   const { locale, defaultLocale } = useRouter()
+  const icons = {
+    'free-to-host': faServer,
+    'setup-time': faCloudArrowUp,
+    'fast-n-responsive': faGaugeHigh,
+    'highly-customisable': faPalette,
+  }
 
   return (
-    <div className={styles.features}>
+    <div className="vd-features">
       {['free-to-host', 'setup-time', 'fast-n-responsive', 'highly-customisable'].map(feature => (
-        <div key={feature} className={styles.feature}>
+        <div key={feature} className="vd-feature">
+          <FontAwesomeIcon icon={icons[feature]} width={18} />
           {featureTranslations[locale][feature] ?? featureTranslations[defaultLocale][feature]}
         </div>
       ))}

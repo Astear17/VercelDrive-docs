@@ -1,30 +1,15 @@
-import Callout from 'nextra-theme-docs/callout'
+# Tải phụ đề video
 
-# Load video subtitles
+VercelDrive có thể tải phụ đề cho preview video được hỗ trợ khi file phụ đề nằm cạnh video.
 
-<Callout emoji="‼️" type="warning">Only WebVTT subtitle files (with `.vtt` extensions) are supported.</Callout>
+Cấu trúc đề xuất:
 
-If you have a [WebVTT](https://www.w3.org/TR/webvtt1/) subtitle or closed caption file (which ends in `.vtt`) for a certain video, you can use it by putting your subtitle file next to your video.
-
-![Video with subtitles](../_images/features/video-subtitles.png)
-
-See this for an example:
-
-- Folder holding the video and subtitle: [🍡 Genshin PV / PV - Shenhe - 申鹤](https://drive.swo.moe/%F0%9F%8D%A1%20Genshin%20PV/PV%20-%20Shenhe%20-%20%E7%94%B3%E9%B9%A4)
-- The video with subtitles: [Collected Miscellany - Shenhe - Fluttering of Frosty Feathers - Genshin Impact.mp4](https://drive.swo.moe/%F0%9F%8D%A1%20Genshin%20PV/PV%20-%20Shenhe%20-%20%E7%94%B3%E9%B9%A4/Collected%20Miscellany%20-%20Shenhe%20-%20Fluttering%20of%20Frosty%20Feathers%20-%20Genshin%20Impact.mp4).
-
-Basically, your video and cooresponding subtitle file should be in the same folder, and named as:
-
-```
-.
-├── <THE_NAME_OF_YOUR_VIDEO_FILE>.mp4
-└── <THE_NAME_OF_YOUR_VIDEO_FILE>.vtt
+```text
+Videos/
+├── demo.mp4
+└── demo.vtt
 ```
 
-Such as:
+Nên dùng WebVTT (`.vtt`) khi có thể. Đặt tên phụ đề gần với tên video để dễ quản lý trong OneDrive.
 
-```
-.
-├── Collected Miscellany - Shenhe - Fluttering of Frosty Feathers - Genshin Impact.mp4
-└── Collected Miscellany - Shenhe - Fluttering of Frosty Feathers - Genshin Impact.vtt
-```
+Phụ đề được tải trong trình phát video của trình duyệt và không chỉnh sửa tệp video gốc.

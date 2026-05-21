@@ -1,0 +1,36 @@
+# Tải tệp và thư mục lên
+
+Upload khả dụng khi VercelDrive được triển khai ở chế độ đọc/ghi.
+
+## Yêu cầu
+
+- Quyền Microsoft Graph delegated `Files.ReadWrite.All`
+- Đã đặt `UPLOAD_PASSWORD` trong Vercel
+- Token OAuth hợp lệ được tạo sau khi thêm quyền đọc/ghi
+- Đã cấu hình `REDIS_URL` để VercelDrive lưu token
+
+Nếu bạn chuyển từ chỉ đọc sang đọc/ghi, hãy xóa token cũ trong Redis/KV và xác thực lại.
+
+## Cách upload hoạt động
+
+Thanh công cụ thư mục hiển thị nút upload. Sau khi mật khẩu upload hợp lệ, VercelDrive lưu một cookie xác thực ngắn hạn dạng HTTP-only và kiểm tra cookie này trong từng request API upload.
+
+Người dùng có thể upload:
+
+- Một hoặc nhiều tệp riêng lẻ
+- Cả thư mục trong trình duyệt hỗ trợ chọn thư mục
+- Kéo thả tệp và thư mục khi trình duyệt hỗ trợ directory drop API
+
+Tệp được upload vào thư mục OneDrive đang mở trong trình duyệt. Upload thư mục giữ nguyên cấu trúc đường dẫn tương đối.
+
+## Tệp lớn
+
+Tệp lớn dùng Microsoft Graph upload session. Server tạo upload session bằng access token đã lưu, sau đó trình duyệt gửi chunk trực tiếp đến URL upload ngắn hạn của Microsoft.
+
+Cách này tránh phải buffer toàn bộ tệp trong Vercel functions và vẫn giữ Microsoft access token ở phía server.
+
+## Live Photos
+
+iPhone Live Photos thường gồm hai tệp gốc: ảnh HEIC/HEIF và video MOV. Hãy upload cả hai tệp cùng lúc, hoặc upload cả thư mục đã export, để giữ đủ thành phần Live Photo.
+
+VercelDrive không chuyển đổi, nén, đổi tên hoặc xóa metadata của tệp đã chọn.

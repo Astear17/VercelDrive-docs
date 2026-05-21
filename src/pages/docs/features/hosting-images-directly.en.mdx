@@ -1,13 +1,15 @@
-# Hosting files (images) directly
+# Hosting Images Directly
 
-Yes, it can be used as an image (or any kind of file) online storage, where the raw file link is exported and can be embedded into your blog or other websites. Images, videos, songs, PDFs..., you name it.
+You can use VercelDrive raw links as direct image URLs.
 
-This GIF below is a sample of a hosted image.
-
-![nyan cat](https://drive.swo.moe/api/raw/?path=/%F0%9F%A5%9F%20Some%20test%20files/nyancat.gif)
-
-You can either copy the direct link from VercelDrive's preview page, or generate your own direct link by adding constructing the URL like so:
-
-```markdown
-![nyan cat](https://drive.swo.moe/api/raw/?path=/%F0%9F%A5%9F%20Some%20test%20files/nyancat.gif)
+```md
+![Example image](https://your-drive.example/api/raw/?path=/Images/photo.png)
 ```
+
+For services that require a filename at the end of the URL, use the named route:
+
+```md
+![Example image](https://your-drive.example/api/name/photo.png?path=/Images/photo.png)
+```
+
+The OneDrive file must be inside the configured `BASE_DIRECTORY`, and protected files need a valid protected route token.

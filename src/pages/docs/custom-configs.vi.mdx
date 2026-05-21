@@ -1,11 +1,94 @@
-# Cấu hình tùy chỉnh
+# Tùy chỉnh cấu hình
 
-VercelDrive cho phép tùy chỉnh giao diện và chức năng của nó bằng các biến môi trường thay vì tập tin cấu hình như trước đây.
+VercelDrive được cấu hình bằng biến môi trường trên Vercel. Tài liệu upstream cũ có thể nhắc đến chỉnh `config/api.config.js` và `config/site.config.js`; với fork này, nên dùng biến môi trường để giữ triển khai một-click ổn định.
 
-## Các biến chính
+## Site Title
 
-- `NEXT_PUBLIC_SITE_TITLE`: Đổi tên trang web.
-- `NEXT_PUBLIC_PROTECTED_ROUTES`: Đặt thư mục được bảo vệ (ngăn chặn truy cập nếu không có tệp mật khẩu).
-- `UPLOAD_PASSWORD`: Thiết lập mật khẩu cho việc tải lên tệp tin vào thư mục.
+`NEXT_PUBLIC_SITE_TITLE` là tiêu đề hiển thị trong thanh điều hướng và metadata trình duyệt.
 
-Mọi thứ đều có thể cấu hình trực tiếp trên bảng điều khiển Vercel.
+```text
+NEXT_PUBLIC_SITE_TITLE=2Drive
+```
+
+Biến này công khai vì bắt đầu bằng `NEXT_PUBLIC_`.
+
+## Base Directory
+
+`BASE_DIRECTORY` xác định thư mục OneDrive được hiển thị trên trang.
+
+```text
+BASE_DIRECTORY=/
+BASE_DIRECTORY=/Public Drive
+```
+
+Dùng `/` cho thư mục gốc OneDrive. Không thêm tiền tố `NEXT_PUBLIC_` cho biến này.
+
+## Contact Email
+
+`NEXT_PUBLIC_EMAIL` thêm liên kết email liên hệ vào header.
+
+```text
+NEXT_PUBLIC_EMAIL=admin@example.com
+```
+
+Không đặt biến này nếu bạn không muốn hiển thị email.
+
+## Protected Routes
+
+`NEXT_PUBLIC_PROTECTED_ROUTES` là danh sách thư mục cần mật khẩu, phân tách bằng dấu phẩy.
+
+```text
+NEXT_PUBLIC_PROTECTED_ROUTES=/private,/family
+```
+
+Xem [Thư mục bảo vệ bằng mật khẩu](./features/protected-folders) để cấu hình đầy đủ.
+
+## Redis Key Prefix
+
+`KV_PREFIX` hữu ích khi nhiều bản triển khai VercelDrive dùng chung một Redis database.
+
+```text
+KV_PREFIX=drive1_
+```
+
+VercelDrive lưu token OAuth dưới dạng `<KV_PREFIX>access_token` và `<KV_PREFIX>refresh_token`.
+
+## Upload Options
+
+Bản triển khai đọc/ghi cần `UPLOAD_PASSWORD`.
+
+```text
+UPLOAD_PASSWORD=strong-private-password
+```
+
+`UPLOAD_CONFLICT_BEHAVIOR` kiểm soát khi tệp upload trùng tên.
+
+```text
+UPLOAD_CONFLICT_BEHAVIOR=rename
+```
+
+Giá trị hỗ trợ là `rename`, `replace` và `fail`. Xem [cấu hình upload nâng cao](./advanced#xu-ly-trung-ten-khi-tai-len).
+
+## Icons And Favicons
+
+Icon tĩnh nằm trong `/public`. Thay các file này trong GitHub project nếu muốn dùng thương hiệu riêng:
+
+```text
+public/favicon.ico
+public/favicon-16x16.png
+public/favicon-32x32.png
+public/apple-touch-icon.png
+public/icons/64.png
+public/icons/128.png
+public/icons/256.png
+public/icons/512.png
+```
+
+Header của docs dùng `public/icons/64.png` cho logo VercelDrive.
+
+## Tài liệu liên quan
+
+- [Bắt đầu](./getting-started): quy trình triển khai và các nút Vercel.
+- [Nâng cao](./advanced): Microsoft app registration, client secret và quyền API.
+- [Cache](./cache): lưu token trong Redis và cache.
+- [Upload files and folders](./features/upload-files-and-folders): hành vi upload và yêu cầu.

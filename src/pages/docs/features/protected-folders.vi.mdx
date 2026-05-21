@@ -1,81 +1,55 @@
-import Callout from 'nextra-theme-docs/callout'
 import Video from '../../../components/video'
 
-# Password protected folders
+# Thư mục bảo vệ bằng mật khẩu
 
 <Video src="/videos/password-demo.mp4" ratio={1246 / 2246} />
 
-## Password protecting a folder/route
+## Bảo vệ một thư mục hoặc route
 
-You can now protect a folder or directory with passwords.
+Bạn có thể bảo vệ một thư mục bằng mật khẩu.
 
-### Method
+### Cách thiết lập
 
-- Declare the protected folder's path under `protectedRoutes` (which is an array) in `config/site.json`.
-- Create **a plain text file** that is named `.password` (character for character, must be this name), and move this file under the folder that you wish to password protect.
-- Open this `.password` file with a text editor, like VS Code or Notepad, and save the password inside (in plain text format).
-- Finally, redeploy your VercelDrive in Vercel so your website picks up the newest protected folder configs.
+- Đặt đường dẫn thư mục cần bảo vệ trong biến môi trường `NEXT_PUBLIC_PROTECTED_ROUTES`, phân tách nhiều thư mục bằng dấu phẩy.
+- Tạo **file văn bản thuần** có tên chính xác là `.password`, rồi đặt file này trong thư mục cần bảo vệ.
+- Mở `.password` bằng VS Code, Notepad hoặc trình soạn thảo văn bản và lưu mật khẩu dưới dạng văn bản thuần.
+- Redeploy VercelDrive trên Vercel để cấu hình mới có hiệu lực.
 
-### Details
+### Chi tiết
 
-If you are wondering what to define in `protectedRoutes`, here is an example.
+Ví dụ bạn có cấu trúc thư mục sau:
 
-Suppose we have the following folder structure:
-
-```
+```text
 .
-├── 📕 Books
+├── Books
 │   └── ...
-├── 🌞 Private folder
+├── Private folder
 │   ├── this-is-public
-│   └── u-need-a-password   <-- this is the folder to protect
-├── 🍡 Genshin PV
+│   └── u-need-a-password   <-- thư mục cần bảo vệ
+├── Media
 │   └── ...
 └── README.md
 ```
 
-We want to password protect the `/u-need-a-password` directory, so we would write inside `protectedRoutes` the absolute path to root.
+Nếu muốn bảo vệ thư mục `u-need-a-password`, hãy đặt `NEXT_PUBLIC_PROTECTED_ROUTES` thành đường dẫn tuyệt đối tính từ root OneDrive:
 
-```json
-"protectedRoutes": [
-  "/🌞 Private folder/u-need-a-password",
-],
+```text
+/Private folder/u-need-a-password
 ```
 
-If you want to add another route, then add it to the next item in the array.
+Nếu có nhiều thư mục, phân tách bằng dấu phẩy:
 
-```json
-"protectedRoutes": [
-  "/🌞 Private folder/u-need-a-password",
-   "/another/route/for/me/to/protect",
-],
+```text
+/Private folder/u-need-a-password,/another/protected-folder
 ```
 
-If there is no directory for you to password protect and you want to disable this function, you can simply pass an empty array `[]` to `protectedRoutes`.
-
-```json
-"protectedRoutes": [],
-```
-
-If you are confused about whether you need to encrypt your password, don't. Put that plain text inside `.password`. Whatever you save inside `.password`, you are going to use as the password for entering the protected directory.
+Không cần mã hóa nội dung trong `.password`. Chuỗi bạn lưu trong file đó chính là mật khẩu để truy cập thư mục.
 
 ![What to write inside .password](../_images/features/dot-password-file.png)
 
-### Caveats
+### Lưu ý
 
-Yes, all seemingly secure protections come at a cost.
+Tính năng này phù hợp cho chia sẻ riêng tư cơ bản, nhưng không nên xem là lớp bảo vệ tuyệt đối cho dữ liệu nhạy cảm.
 
-1. The direct link of the files under your protected directory can be shared with the URL parameter `&odpt=<hashed_token>`, if you really want to:
-
-   ```
-   https://drive.swo.moe/api/raw/?path=/🌞%20Private%20folder/u-need-a-password/watch%20this.mp4&odpt=c8ebdc273d673d167c238dd25a997bdf9b4ecbf589452697c1a6cb416b2ed11d
-   ```
-
-   Whether or not this exposes your password, protected files, personal information, etc., is all unknown. Use at your own risk.
-
-2. I personally cannot guarantee that this protection is impenetrable and fully secure. Hence, I would not recommend protecting sensitive information with this method. Think of this as an extra layer of annoyance to keep files you want to share with only the people you wish.
-
-<Callout emoji="🗣">
-  More on this in [Password protected routes is now supported
-  #66](https://github.com/Astear17/VercelDrive/discussions/66).
-</Callout>
+1. Liên kết trực tiếp của tệp trong thư mục được bảo vệ có thể kèm tham số `&odpt=<hashed_token>`.
+2. Không nên đặt dữ liệu nhạy cảm cao trong thư mục công khai chỉ dựa vào `.password`.

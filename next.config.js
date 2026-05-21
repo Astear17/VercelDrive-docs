@@ -13,6 +13,16 @@ module.exports = withNextra({
   async redirects() {
     return [
       {
+        source: '/vi-VN',
+        destination: '/vi',
+        permanent: true
+      },
+      {
+        source: '/vi-VN/:path*',
+        destination: '/vi/:path*',
+        permanent: true
+      },
+      {
         source: '/sponsor',
         destination: '/sponsor/ways',
         permanent: true

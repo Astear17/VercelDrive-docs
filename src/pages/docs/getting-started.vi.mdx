@@ -2,7 +2,7 @@ import Callout from 'nextra-theme-docs/callout'
 
 # Bắt đầu
 
-Hướng dẫn này giúp bạn triển khai một VercelDrive riêng trên Vercel. Trước tiên hãy chọn mô hình quyền, sau đó tạo ứng dụng Microsoft, triển khai dự án, kết nối Redis và hoàn tất OAuth.
+Hướng dẫn này giúp bạn triển khai một VercelDrive riêng trên Vercel. Trước tiên hãy chọn mô hình quyền, sau đó tạo ứng dụng Microsoft, triển khai dự án, kết nối Redis và hoàn tất OAuth. Khi cần chi tiết hơn, mở thêm [Nâng cao](./advanced), [Tùy chỉnh cấu hình](./custom-configs) và [Cache](./cache).
 
 ## 1. Chọn chế độ truy cập
 
@@ -19,8 +19,8 @@ Hướng dẫn này giúp bạn triển khai một VercelDrive riêng trên Verc
 
 Tạo Microsoft Entra App Registration cho tài khoản OneDrive mà VercelDrive sẽ truy cập.
 
-1. Thêm các quyền Microsoft Graph delegated theo chế độ đã chọn ở trên.
-2. Tạo client secret.
+1. Thêm các quyền Microsoft Graph delegated theo chế độ đã chọn ở trên. Xem [Quyền API](./advanced#quyen-api).
+2. Tạo client secret. Xem [Client Secret](./advanced#client-secret).
 3. Chuẩn bị `CLIENT_ID` và giá trị `CLIENT_SECRET` đã được AES-obfuscate mà VercelDrive sử dụng.
 4. Xác nhận email tài khoản OneDrive cho `USER_PRINCIPAL_NAME`.
 
@@ -28,23 +28,23 @@ Tạo Microsoft Entra App Registration cho tài khoản OneDrive mà VercelDrive
 
 Bắt buộc cho cả hai chế độ:
 
-- `NEXT_PUBLIC_SITE_TITLE`: tiêu đề hiển thị trong giao diện, ví dụ `2Drive`
+- `NEXT_PUBLIC_SITE_TITLE`: tiêu đề hiển thị trong giao diện, ví dụ `2Drive`. Xem [Tùy chỉnh cấu hình](./custom-configs#site-title).
 - `USER_PRINCIPAL_NAME`: email tài khoản OneDrive, ví dụ `example@outlook.com`
-- `BASE_DIRECTORY`: thư mục OneDrive được hiển thị trên trang, ví dụ `/` hoặc `/Public Drive`
-- `CLIENT_ID`: client ID của Microsoft Entra App Registration
-- `CLIENT_SECRET`: client secret đã được AES-obfuscate
-- `REDIS_URL`: chuỗi kết nối Redis, thường được Upstash tự thêm sau khi kết nối
+- `BASE_DIRECTORY`: thư mục OneDrive được hiển thị trên trang, ví dụ `/` hoặc `/Public Drive`. Xem [Tùy chỉnh cấu hình](./custom-configs#base-directory).
+- `CLIENT_ID`: client ID của Microsoft Entra App Registration. Xem [Nâng cao](./advanced#dang-ky-ung-dung-microsoft-entra).
+- `CLIENT_SECRET`: client secret đã được AES-obfuscate. Xem [Nâng cao](./advanced#client-secret).
+- `REDIS_URL`: chuỗi kết nối Redis, thường được Upstash tự thêm sau khi kết nối. Xem [Cache](./cache).
 
 Bắt buộc chỉ khi bật tải lên ở chế độ đọc/ghi:
 
-- `UPLOAD_PASSWORD`: mật khẩu phía máy chủ cần nhập trước khi tải lên
+- `UPLOAD_PASSWORD`: mật khẩu phía máy chủ cần nhập trước khi tải lên. Xem [Cổng mật khẩu tải lên](./advanced#cong-mat-khau-tai-len).
 
 Các biến tùy chọn hữu ích:
 
-- `NEXT_PUBLIC_PROTECTED_ROUTES`: danh sách thư mục cần mật khẩu, phân tách bằng dấu phẩy, ví dụ `/private,/family`
-- `NEXT_PUBLIC_EMAIL`: email liên hệ hiển thị ở header
-- `KV_PREFIX`: tiền tố khóa Redis khi nhiều bản triển khai dùng chung một Redis database
-- `UPLOAD_CONFLICT_BEHAVIOR`: cách xử lý khi tải lên trùng tên, gồm `rename`, `replace` hoặc `fail`
+- `NEXT_PUBLIC_PROTECTED_ROUTES`: danh sách thư mục cần mật khẩu, phân tách bằng dấu phẩy, ví dụ `/private,/family`. Xem [Thư mục bảo vệ bằng mật khẩu](./features/protected-folders).
+- `NEXT_PUBLIC_EMAIL`: email liên hệ hiển thị ở header. Xem [Tùy chỉnh cấu hình](./custom-configs#contact-email).
+- `KV_PREFIX`: tiền tố khóa Redis khi nhiều bản triển khai dùng chung một Redis database. Xem [Cache](./cache).
+- `UPLOAD_CONFLICT_BEHAVIOR`: cách xử lý khi tải lên trùng tên, gồm `rename`, `replace` hoặc `fail`. Xem [Xử lý trùng tên khi tải lên](./advanced#xu-ly-trung-ten-khi-tai-len).
 
 Không dùng tiền tố `NEXT_PUBLIC_` cho secret, Redis, Microsoft token, `USER_PRINCIPAL_NAME`, `BASE_DIRECTORY`, `CLIENT_ID`, `CLIENT_SECRET` hoặc `UPLOAD_PASSWORD`.
 
@@ -52,20 +52,20 @@ Không dùng tiền tố `NEXT_PUBLIC_` cho secret, Redis, Microsoft token, `USE
 
 Chọn một nút triển khai phù hợp với chế độ và biến bạn cần.
 
-<div className="my-6 grid gap-3 sm:grid-cols-2">
-  <a className="rounded-md border border-gray-300 p-4 no-underline transition hover:border-black dark:border-gray-700 dark:hover:border-white" href="https://vercel.com/new/git/clone?repository-url=https%3A%2F%2Fgithub.com%2FAstear17%2FVercelDrive&env=NEXT_PUBLIC_SITE_TITLE,USER_PRINCIPAL_NAME,BASE_DIRECTORY,CLIENT_ID,CLIENT_SECRET&buildCommand=pnpm+build&framework=nextjs&installCommand=pnpm+install">
+<div className="vd-deploy-grid">
+  <a className="vd-deploy-card" href="https://vercel.com/new/git/clone?repository-url=https%3A%2F%2Fgithub.com%2FAstear17%2FVercelDrive&env=NEXT_PUBLIC_SITE_TITLE,USER_PRINCIPAL_NAME,BASE_DIRECTORY,CLIENT_ID,CLIENT_SECRET&buildCommand=pnpm+build&framework=nextjs&installCommand=pnpm+install">
     <strong>Triển khai chỉ đọc</strong>
     <span className="mt-1 block text-sm text-gray-600 dark:text-gray-400">Duyệt, xem trước, chia sẻ và tải xuống.</span>
   </a>
-  <a className="rounded-md border border-gray-300 p-4 no-underline transition hover:border-black dark:border-gray-700 dark:hover:border-white" href="https://vercel.com/new/git/clone?repository-url=https%3A%2F%2Fgithub.com%2FAstear17%2FVercelDrive&env=NEXT_PUBLIC_SITE_TITLE,USER_PRINCIPAL_NAME,BASE_DIRECTORY,CLIENT_ID,CLIENT_SECRET,UPLOAD_PASSWORD&buildCommand=pnpm+build&framework=nextjs&installCommand=pnpm+install">
+  <a className="vd-deploy-card" href="https://vercel.com/new/git/clone?repository-url=https%3A%2F%2Fgithub.com%2FAstear17%2FVercelDrive&env=NEXT_PUBLIC_SITE_TITLE,USER_PRINCIPAL_NAME,BASE_DIRECTORY,CLIENT_ID,CLIENT_SECRET,UPLOAD_PASSWORD&buildCommand=pnpm+build&framework=nextjs&installCommand=pnpm+install">
     <strong>Triển khai có tải lên</strong>
     <span className="mt-1 block text-sm text-gray-600 dark:text-gray-400">Thêm `UPLOAD_PASSWORD` cho chế độ đọc/ghi.</span>
   </a>
-  <a className="rounded-md border border-gray-300 p-4 no-underline transition hover:border-black dark:border-gray-700 dark:hover:border-white" href="https://vercel.com/new/git/clone?repository-url=https%3A%2F%2Fgithub.com%2FAstear17%2FVercelDrive&env=NEXT_PUBLIC_SITE_TITLE,USER_PRINCIPAL_NAME,BASE_DIRECTORY,CLIENT_ID,CLIENT_SECRET,NEXT_PUBLIC_PROTECTED_ROUTES&buildCommand=pnpm+build&framework=nextjs&installCommand=pnpm+install">
+  <a className="vd-deploy-card" href="https://vercel.com/new/git/clone?repository-url=https%3A%2F%2Fgithub.com%2FAstear17%2FVercelDrive&env=NEXT_PUBLIC_SITE_TITLE,USER_PRINCIPAL_NAME,BASE_DIRECTORY,CLIENT_ID,CLIENT_SECRET,NEXT_PUBLIC_PROTECTED_ROUTES&buildCommand=pnpm+build&framework=nextjs&installCommand=pnpm+install">
     <strong>Chỉ đọc với thư mục bảo vệ</strong>
     <span className="mt-1 block text-sm text-gray-600 dark:text-gray-400">Thêm `NEXT_PUBLIC_PROTECTED_ROUTES`.</span>
   </a>
-  <a className="rounded-md border border-gray-300 p-4 no-underline transition hover:border-black dark:border-gray-700 dark:hover:border-white" href="https://vercel.com/new/git/clone?repository-url=https%3A%2F%2Fgithub.com%2FAstear17%2FVercelDrive&env=NEXT_PUBLIC_SITE_TITLE,USER_PRINCIPAL_NAME,BASE_DIRECTORY,CLIENT_ID,CLIENT_SECRET,UPLOAD_PASSWORD,NEXT_PUBLIC_PROTECTED_ROUTES,KV_PREFIX,NEXT_PUBLIC_EMAIL,UPLOAD_CONFLICT_BEHAVIOR&buildCommand=pnpm+build&framework=nextjs&installCommand=pnpm+install">
+  <a className="vd-deploy-card" href="https://vercel.com/new/git/clone?repository-url=https%3A%2F%2Fgithub.com%2FAstear17%2FVercelDrive&env=NEXT_PUBLIC_SITE_TITLE,USER_PRINCIPAL_NAME,BASE_DIRECTORY,CLIENT_ID,CLIENT_SECRET,UPLOAD_PASSWORD,NEXT_PUBLIC_PROTECTED_ROUTES,KV_PREFIX,NEXT_PUBLIC_EMAIL,UPLOAD_CONFLICT_BEHAVIOR&buildCommand=pnpm+build&framework=nextjs&installCommand=pnpm+install">
     <strong>Thiết lập đầy đủ</strong>
     <span className="mt-1 block text-sm text-gray-600 dark:text-gray-400">Tải lên, thư mục bảo vệ, email, KV prefix và xử lý trùng tên.</span>
   </a>

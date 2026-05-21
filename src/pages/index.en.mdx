@@ -6,9 +6,10 @@ search: false
 import Bleed from 'nextra-theme-docs/bleed'
 import Features from '../components/features'
 
-<h1 className="text-center font-extrabold md:text-5xl mt-8">VercelDrive</h1>
+<section className="vd-home">
+<h1 className="vd-home-title">VercelDrive</h1>
 
-<p className="text-center text-lg mb-2 text-gray-600 md:text-2xl">
+<p className="vd-home-subtitle">
   OneDrive public directory listing and upload app, powered by Vercel and Next.js.
 </p>
 
@@ -16,12 +17,15 @@ import Features from '../components/features'
   <Features />
 </Bleed>
 
-Showcase, share, preview, download, and upload files inside your OneDrive with `VercelDrive`. Simple one-click setup, serverless, and open source. Includes features like drag-and-drop uploads, large-file sessions, and password protection.
+<p className="vd-home-copy">
+  Showcase, share, preview, download, and upload files inside your OneDrive with <code>VercelDrive</code>. Simple one-click setup, serverless, and open source. Includes features like drag-and-drop uploads, large-file sessions, and password protection.
+</p>
 
-<div className="mt-8 flex flex-wrap justify-center gap-3">
-  <a className="inline-flex items-center rounded-md bg-black px-4 py-2 text-sm font-semibold text-white no-underline dark:bg-white dark:text-black" href="/docs/getting-started">Getting Started</a>
-  <a className="inline-flex items-center rounded-md border border-gray-300 px-4 py-2 text-sm font-semibold no-underline dark:border-gray-700" href="/blog/whats-new">What's New</a>
-  <a className="inline-flex items-center rounded-md border border-gray-300 px-4 py-2 text-sm font-semibold no-underline dark:border-gray-700" href="https://github.com/Astear17/VercelDrive">GitHub</a>
+<div className="vd-actions">
+  <a className="vd-button vd-button-primary" href="/docs/getting-started">Getting Started</a>
+  <a className="vd-button" href="/blog/whats-new">What's New</a>
+  <a className="vd-button" href="https://github.com/Astear17/VercelDrive">GitHub</a>
 </div>
 
-![Demo screenshot](../../public/images/demo.png)
+<img className="vd-demo-image" src="/demo.png" alt="VercelDrive demo" />
+</section>

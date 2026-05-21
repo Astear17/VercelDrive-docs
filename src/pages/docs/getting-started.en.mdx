@@ -2,7 +2,7 @@ import Callout from 'nextra-theme-docs/callout'
 
 # Getting Started
 
-This guide deploys your own VercelDrive instance on Vercel. Choose the permission model first, then create the Microsoft app, deploy the project, connect Redis, and complete OAuth.
+This guide deploys your own VercelDrive instance on Vercel. Choose the permission model first, then create the Microsoft app, deploy the project, connect Redis, and complete OAuth. For deeper setup details, keep [Advanced](./advanced), [Custom configs](./custom-configs), and [Cache](./cache) open while you work.
 
 ## 1. Choose Access Mode
 
@@ -19,8 +19,8 @@ This guide deploys your own VercelDrive instance on Vercel. Choose the permissio
 
 Create a Microsoft Entra App Registration for the OneDrive account you want VercelDrive to access.
 
-1. Add the delegated Microsoft Graph permissions for the mode you selected above.
-2. Create a client secret.
+1. Add the delegated Microsoft Graph permissions for the mode you selected above. See [Advanced API permissions](./advanced#api-permissions).
+2. Create a client secret. See [Advanced client secret](./advanced#client-secret).
 3. Prepare the `CLIENT_ID` and the AES-obfuscated `CLIENT_SECRET` value used by VercelDrive.
 4. Confirm the OneDrive account email for `USER_PRINCIPAL_NAME`.
 
@@ -28,23 +28,23 @@ Create a Microsoft Entra App Registration for the OneDrive account you want Verc
 
 Required for both modes:
 
-- `NEXT_PUBLIC_SITE_TITLE`: title shown in the UI, for example `2Drive`
-- `USER_PRINCIPAL_NAME`: OneDrive account email, for example `example@outlook.com`
-- `BASE_DIRECTORY`: OneDrive folder exposed by the site, for example `/` or `/Public Drive`
-- `CLIENT_ID`: Microsoft Entra App Registration client ID
-- `CLIENT_SECRET`: AES-obfuscated client secret
-- `REDIS_URL`: Redis connection string, usually injected by Upstash after deployment
+- `NEXT_PUBLIC_SITE_TITLE`: title shown in the UI, for example `2Drive`. See [Custom configs](./custom-configs#site-title).
+- `USER_PRINCIPAL_NAME`: OneDrive account email, for example `example@outlook.com`.
+- `BASE_DIRECTORY`: OneDrive folder exposed by the site, for example `/` or `/Public Drive`. See [Custom configs](./custom-configs#base-directory).
+- `CLIENT_ID`: Microsoft Entra App Registration client ID. See [Advanced](./advanced#microsoft-entra-app-registration).
+- `CLIENT_SECRET`: AES-obfuscated client secret. See [Advanced](./advanced#client-secret).
+- `REDIS_URL`: Redis connection string, usually injected by Upstash after deployment. See [Cache](./cache).
 
 Required only for read/write uploads:
 
-- `UPLOAD_PASSWORD`: server-side password required before uploads start
+- `UPLOAD_PASSWORD`: server-side password required before uploads start. See [Advanced password upload gate](./advanced#password-upload-gate).
 
 Useful optional variables:
 
-- `NEXT_PUBLIC_PROTECTED_ROUTES`: comma-separated protected folder paths, for example `/private,/family`
-- `NEXT_PUBLIC_EMAIL`: contact email shown in the header
-- `KV_PREFIX`: Redis key prefix when multiple deployments share one Redis database
-- `UPLOAD_CONFLICT_BEHAVIOR`: upload duplicate-name behavior, one of `rename`, `replace`, or `fail`
+- `NEXT_PUBLIC_PROTECTED_ROUTES`: comma-separated protected folder paths, for example `/private,/family`. See [Password protected folders](./features/protected-folders).
+- `NEXT_PUBLIC_EMAIL`: contact email shown in the header. See [Custom configs](./custom-configs#contact-email).
+- `KV_PREFIX`: Redis key prefix when multiple deployments share one Redis database. See [Cache](./cache).
+- `UPLOAD_CONFLICT_BEHAVIOR`: upload duplicate-name behavior, one of `rename`, `replace`, or `fail`. See [Advanced upload conflict behavior](./advanced#upload-conflict-behavior).
 
 Do not use the `NEXT_PUBLIC_` prefix for secrets, Redis values, Microsoft tokens, `USER_PRINCIPAL_NAME`, `BASE_DIRECTORY`, `CLIENT_ID`, `CLIENT_SECRET`, or `UPLOAD_PASSWORD`.
 
@@ -52,20 +52,20 @@ Do not use the `NEXT_PUBLIC_` prefix for secrets, Redis values, Microsoft tokens
 
 Use one of these deployment buttons based on the mode and variables you need.
 
-<div className="my-6 grid gap-3 sm:grid-cols-2">
-  <a className="rounded-md border border-gray-300 p-4 no-underline transition hover:border-black dark:border-gray-700 dark:hover:border-white" href="https://vercel.com/new/git/clone?repository-url=https%3A%2F%2Fgithub.com%2FAstear17%2FVercelDrive&env=NEXT_PUBLIC_SITE_TITLE,USER_PRINCIPAL_NAME,BASE_DIRECTORY,CLIENT_ID,CLIENT_SECRET&buildCommand=pnpm+build&framework=nextjs&installCommand=pnpm+install">
+<div className="vd-deploy-grid">
+  <a className="vd-deploy-card" href="https://vercel.com/new/git/clone?repository-url=https%3A%2F%2Fgithub.com%2FAstear17%2FVercelDrive&env=NEXT_PUBLIC_SITE_TITLE,USER_PRINCIPAL_NAME,BASE_DIRECTORY,CLIENT_ID,CLIENT_SECRET&buildCommand=pnpm+build&framework=nextjs&installCommand=pnpm+install">
     <strong>Deploy read-only</strong>
     <span className="mt-1 block text-sm text-gray-600 dark:text-gray-400">Browsing, previews, sharing, and downloads.</span>
   </a>
-  <a className="rounded-md border border-gray-300 p-4 no-underline transition hover:border-black dark:border-gray-700 dark:hover:border-white" href="https://vercel.com/new/git/clone?repository-url=https%3A%2F%2Fgithub.com%2FAstear17%2FVercelDrive&env=NEXT_PUBLIC_SITE_TITLE,USER_PRINCIPAL_NAME,BASE_DIRECTORY,CLIENT_ID,CLIENT_SECRET,UPLOAD_PASSWORD&buildCommand=pnpm+build&framework=nextjs&installCommand=pnpm+install">
+  <a className="vd-deploy-card" href="https://vercel.com/new/git/clone?repository-url=https%3A%2F%2Fgithub.com%2FAstear17%2FVercelDrive&env=NEXT_PUBLIC_SITE_TITLE,USER_PRINCIPAL_NAME,BASE_DIRECTORY,CLIENT_ID,CLIENT_SECRET,UPLOAD_PASSWORD&buildCommand=pnpm+build&framework=nextjs&installCommand=pnpm+install">
     <strong>Deploy with uploads</strong>
     <span className="mt-1 block text-sm text-gray-600 dark:text-gray-400">Adds `UPLOAD_PASSWORD` for read/write mode.</span>
   </a>
-  <a className="rounded-md border border-gray-300 p-4 no-underline transition hover:border-black dark:border-gray-700 dark:hover:border-white" href="https://vercel.com/new/git/clone?repository-url=https%3A%2F%2Fgithub.com%2FAstear17%2FVercelDrive&env=NEXT_PUBLIC_SITE_TITLE,USER_PRINCIPAL_NAME,BASE_DIRECTORY,CLIENT_ID,CLIENT_SECRET,NEXT_PUBLIC_PROTECTED_ROUTES&buildCommand=pnpm+build&framework=nextjs&installCommand=pnpm+install">
+  <a className="vd-deploy-card" href="https://vercel.com/new/git/clone?repository-url=https%3A%2F%2Fgithub.com%2FAstear17%2FVercelDrive&env=NEXT_PUBLIC_SITE_TITLE,USER_PRINCIPAL_NAME,BASE_DIRECTORY,CLIENT_ID,CLIENT_SECRET,NEXT_PUBLIC_PROTECTED_ROUTES&buildCommand=pnpm+build&framework=nextjs&installCommand=pnpm+install">
     <strong>Read-only with protected routes</strong>
     <span className="mt-1 block text-sm text-gray-600 dark:text-gray-400">Adds `NEXT_PUBLIC_PROTECTED_ROUTES`.</span>
   </a>
-  <a className="rounded-md border border-gray-300 p-4 no-underline transition hover:border-black dark:border-gray-700 dark:hover:border-white" href="https://vercel.com/new/git/clone?repository-url=https%3A%2F%2Fgithub.com%2FAstear17%2FVercelDrive&env=NEXT_PUBLIC_SITE_TITLE,USER_PRINCIPAL_NAME,BASE_DIRECTORY,CLIENT_ID,CLIENT_SECRET,UPLOAD_PASSWORD,NEXT_PUBLIC_PROTECTED_ROUTES,KV_PREFIX,NEXT_PUBLIC_EMAIL,UPLOAD_CONFLICT_BEHAVIOR&buildCommand=pnpm+build&framework=nextjs&installCommand=pnpm+install">
+  <a className="vd-deploy-card" href="https://vercel.com/new/git/clone?repository-url=https%3A%2F%2Fgithub.com%2FAstear17%2FVercelDrive&env=NEXT_PUBLIC_SITE_TITLE,USER_PRINCIPAL_NAME,BASE_DIRECTORY,CLIENT_ID,CLIENT_SECRET,UPLOAD_PASSWORD,NEXT_PUBLIC_PROTECTED_ROUTES,KV_PREFIX,NEXT_PUBLIC_EMAIL,UPLOAD_CONFLICT_BEHAVIOR&buildCommand=pnpm+build&framework=nextjs&installCommand=pnpm+install">
     <strong>Full setup</strong>
     <span className="mt-1 block text-sm text-gray-600 dark:text-gray-400">Uploads, protected routes, email, KV prefix, and conflict behavior.</span>
   </a>
