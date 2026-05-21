@@ -35,5 +35,5 @@ export default {
   footer: true,
   defaultMenuCollapsed: true,
   footerEditLink: ({ locale }) => locale === 'vi' ? 'Chỉnh sửa trang này trên GitHub' : 'Edit this page on GitHub',
-  footerText: <>Built with love {new Date().getFullYear()} © Spencer Woo</>
+  footerText: <>© {new Date().getFullYear()} Astear17</>
 }

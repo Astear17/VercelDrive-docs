@@ -2,67 +2,85 @@ import Callout from 'nextra-theme-docs/callout'
 
 # Bắt đầu
 
-## Rút gọn (TL;DR)
+Hướng dẫn này giúp bạn triển khai một VercelDrive riêng trên Vercel. Trước tiên hãy chọn mô hình quyền, sau đó tạo ứng dụng Microsoft, triển khai dự án, kết nối Redis và hoàn tất OAuth.
 
-<Callout emoji="⚡️">Dưới đây là hướng dẫn nhanh về cách triển khai VercelDrive của riêng bạn.</Callout>
+## 1. Chọn chế độ truy cập
 
-1. Bạn thậm chí không cần phải fork kho lưu trữ! Sử dụng nút [Triển khai 1 Click](https://vercel.com/new/git/clone?repository-url=https%3A%2F%2Fgithub.com%2FAstear17%2FVercelDrive).
-2. Điền các biến môi trường cần thiết trong quá trình triển khai trên Vercel (`NEXT_PUBLIC_SITE_TITLE`, `USER_PRINCIPAL_NAME`, `BASE_DIRECTORY`, `CLIENT_ID`, `CLIENT_SECRET`, `UPLOAD_PASSWORD`).
-3. Thiết lập cơ sở dữ liệu Upstash Redis và thêm biến môi trường `REDIS_URL`.
-4. Triển khai lại và hoàn tất xác thực OAuth trên trang web của bạn. 🎉
+| Chế độ | Khi nào dùng | Quyền Microsoft Graph delegated | Biến cho tải lên |
+| --- | --- | --- | --- |
+| Chỉ đọc | Người xem chỉ cần duyệt, xem trước, chia sẻ và tải xuống tệp. | `User.Read`, `Files.Read.All`, `offline_access` | Không đặt `UPLOAD_PASSWORD`. |
+| Đọc/ghi | Bạn muốn tải tệp lên và tạo thư mục từ trình duyệt bằng mật khẩu. | `User.Read`, `Files.ReadWrite.All`, `offline_access` | Đặt `UPLOAD_PASSWORD`; có thể đặt thêm `UPLOAD_CONFLICT_BEHAVIOR`. |
 
-VercelDrive xử lý xác thực, lưu trữ mã thông báo an toàn trong Redis và tự động đóng kênh xác thực sau đó.
-
-## Bắt đầu (hướng dẫn chi tiết!)
-
-VercelDrive sử dụng OneDrive của bạn làm máy chủ lưu trữ và hiển thị các tệp, hình ảnh, video, bài hát và tài liệu được lưu trữ trong OneDrive của bạn để người khác có thể xem trước, tải xuống và tải lên.
-
-![Ảnh chụp màn hình VercelDrive trên nhiều nền tảng](./_images/getting-started/od-vercel-idx.png)
-
-## Quyền API Microsoft Graph
-
-Trước khi triển khai, bạn phải cấu hình Đăng ký Ứng dụng Microsoft Entra (Azure AD) với các quyền API chính xác. Vì VercelDrive hỗ trợ tải tệp lên và tạo thư mục, bạn phải sử dụng các quyền Microsoft Graph được ủy quyền này:
-
-- `User.Read`
-- `Files.ReadWrite.All`
-- `offline_access`
-
-<Callout emoji="⚠️" type="warning">
-  Các phiên bản cũ hơn của ứng dụng này chỉ yêu cầu quyền truy cập chỉ đọc. Nếu bạn đang nâng cấp, bạn phải nâng cấp quyền của mình lên `Files.ReadWrite.All` và xác thực lại để cho phép tải tệp lên.
+<Callout type="warning">
+  Nếu nâng cấp một bản triển khai chỉ đọc sang đọc/ghi, hãy xóa token OAuth cũ trong Redis/KV và xác thực lại. Token hiện có vẫn giữ phạm vi Microsoft Graph cũ cho đến khi được thay thế.
 </Callout>
 
-## Cấu hình Biến môi trường
+## 2. Tạo ứng dụng Microsoft Entra
 
-Khác với các phiên bản cũ hơn yêu cầu chỉnh sửa `config/site.config.js` và `config/api.config.js`, VercelDrive được cấu hình hoàn toàn thông qua các biến môi trường. Chuẩn bị các giá trị này trước khi triển khai:
+Tạo Microsoft Entra App Registration cho tài khoản OneDrive mà VercelDrive sẽ truy cập.
 
-- `NEXT_PUBLIC_SITE_TITLE`: Tiêu đề hiển thị trên giao diện người dùng (ví dụ: `2Drive`)
-- `USER_PRINCIPAL_NAME`: Email tài khoản OneDrive cần truy cập (ví dụ: `example@outlook.com`)
-- `BASE_DIRECTORY`: Thư mục gốc OneDrive mà trang web hiển thị (ví dụ: `/` hoặc `/Public Drive`)
-- `CLIENT_ID`: ID Máy khách Đăng ký Ứng dụng Azure của bạn
-- `CLIENT_SECRET`: Bí mật máy khách Azure của bạn
-- `UPLOAD_PASSWORD`: Mật khẩu cho cổng xác thực tải lên ở phía máy chủ
+1. Thêm các quyền Microsoft Graph delegated theo chế độ đã chọn ở trên.
+2. Tạo client secret.
+3. Chuẩn bị `CLIENT_ID` và giá trị `CLIENT_SECRET` đã được AES-obfuscate mà VercelDrive sử dụng.
+4. Xác nhận email tài khoản OneDrive cho `USER_PRINCIPAL_NAME`.
 
-## Triển khai lên Vercel
+## 3. Chuẩn bị biến môi trường
 
-Nhấp vào nút bên dưới để bắt đầu triển khai chỉ với một cú nhấp chuột:
+Bắt buộc cho cả hai chế độ:
 
-[![Triển khai với Vercel](https://vercel.com/button)](https://vercel.com/new/git/clone?repository-url=https%3A%2F%2Fgithub.com%2FAstear17%2FVercelDrive&env=NEXT_PUBLIC_SITE_TITLE,USER_PRINCIPAL_NAME,BASE_DIRECTORY,CLIENT_ID,CLIENT_SECRET,UPLOAD_PASSWORD&buildCommand=pnpm+build&framework=nextjs&installCommand=pnpm+install)
+- `NEXT_PUBLIC_SITE_TITLE`: tiêu đề hiển thị trong giao diện, ví dụ `2Drive`
+- `USER_PRINCIPAL_NAME`: email tài khoản OneDrive, ví dụ `example@outlook.com`
+- `BASE_DIRECTORY`: thư mục OneDrive được hiển thị trên trang, ví dụ `/` hoặc `/Public Drive`
+- `CLIENT_ID`: client ID của Microsoft Entra App Registration
+- `CLIENT_SECRET`: client secret đã được AES-obfuscate
+- `REDIS_URL`: chuỗi kết nối Redis, thường được Upstash tự thêm sau khi kết nối
 
-### Tạo kết nối Redis
+Bắt buộc chỉ khi bật tải lên ở chế độ đọc/ghi:
 
-Cơ sở dữ liệu Redis được sử dụng để lưu trữ `access_tokens` và `refresh_tokens` OAuth.
+- `UPLOAD_PASSWORD`: mật khẩu phía máy chủ cần nhập trước khi tải lên
 
-- Chúng tôi khuyên dùng **Upstash Redis**, nó miễn phí và tích hợp hoàn toàn với Vercel. 
-- Bạn có thể thêm tích hợp Upstash trực tiếp trong Vercel để tự động thêm biến môi trường `REDIS_URL`.
+Các biến tùy chọn hữu ích:
 
-### Triển khai lại trên Vercel
+- `NEXT_PUBLIC_PROTECTED_ROUTES`: danh sách thư mục cần mật khẩu, phân tách bằng dấu phẩy, ví dụ `/private,/family`
+- `NEXT_PUBLIC_EMAIL`: email liên hệ hiển thị ở header
+- `KV_PREFIX`: tiền tố khóa Redis khi nhiều bản triển khai dùng chung một Redis database
+- `UPLOAD_CONFLICT_BEHAVIOR`: cách xử lý khi tải lên trùng tên, gồm `rename`, `replace` hoặc `fail`
 
-Sau khi thiết lập `REDIS_URL`, hãy kích hoạt triển khai lại trong Vercel để áp dụng biến môi trường mới. Sau đó điều hướng đến URL đã triển khai của bạn.
+Không dùng tiền tố `NEXT_PUBLIC_` cho secret, Redis, Microsoft token, `USER_PRINCIPAL_NAME`, `BASE_DIRECTORY`, `CLIENT_ID`, `CLIENT_SECRET` hoặc `UPLOAD_PASSWORD`.
 
-## Xác thực VercelDrive của bạn
+## 4. Triển khai lên Vercel
 
-Truy cập trang web đã triển khai của bạn (ví dụ: `https://xxx.vercel.app`). Bạn sẽ được chuyển hướng đến trang thiết lập OAuth. Làm theo hướng dẫn để nhận mã xác thực, đổi lấy mã thông báo và lưu chúng vào Redis. 
+Chọn một nút triển khai phù hợp với chế độ và biến bạn cần.
 
-<Callout emoji="📢">
-  Sau khi thiết lập thành công, VercelDrive sẽ tự động đóng kênh xác thực OAuth. Điều này ngăn chặn những người dùng trái phép xác thực lại bằng mã thông báo của bạn.
+<div className="my-6 grid gap-3 sm:grid-cols-2">
+  <a className="rounded-md border border-gray-300 p-4 no-underline transition hover:border-black dark:border-gray-700 dark:hover:border-white" href="https://vercel.com/new/git/clone?repository-url=https%3A%2F%2Fgithub.com%2FAstear17%2FVercelDrive&env=NEXT_PUBLIC_SITE_TITLE,USER_PRINCIPAL_NAME,BASE_DIRECTORY,CLIENT_ID,CLIENT_SECRET&buildCommand=pnpm+build&framework=nextjs&installCommand=pnpm+install">
+    <strong>Triển khai chỉ đọc</strong>
+    <span className="mt-1 block text-sm text-gray-600 dark:text-gray-400">Duyệt, xem trước, chia sẻ và tải xuống.</span>
+  </a>
+  <a className="rounded-md border border-gray-300 p-4 no-underline transition hover:border-black dark:border-gray-700 dark:hover:border-white" href="https://vercel.com/new/git/clone?repository-url=https%3A%2F%2Fgithub.com%2FAstear17%2FVercelDrive&env=NEXT_PUBLIC_SITE_TITLE,USER_PRINCIPAL_NAME,BASE_DIRECTORY,CLIENT_ID,CLIENT_SECRET,UPLOAD_PASSWORD&buildCommand=pnpm+build&framework=nextjs&installCommand=pnpm+install">
+    <strong>Triển khai có tải lên</strong>
+    <span className="mt-1 block text-sm text-gray-600 dark:text-gray-400">Thêm `UPLOAD_PASSWORD` cho chế độ đọc/ghi.</span>
+  </a>
+  <a className="rounded-md border border-gray-300 p-4 no-underline transition hover:border-black dark:border-gray-700 dark:hover:border-white" href="https://vercel.com/new/git/clone?repository-url=https%3A%2F%2Fgithub.com%2FAstear17%2FVercelDrive&env=NEXT_PUBLIC_SITE_TITLE,USER_PRINCIPAL_NAME,BASE_DIRECTORY,CLIENT_ID,CLIENT_SECRET,NEXT_PUBLIC_PROTECTED_ROUTES&buildCommand=pnpm+build&framework=nextjs&installCommand=pnpm+install">
+    <strong>Chỉ đọc với thư mục bảo vệ</strong>
+    <span className="mt-1 block text-sm text-gray-600 dark:text-gray-400">Thêm `NEXT_PUBLIC_PROTECTED_ROUTES`.</span>
+  </a>
+  <a className="rounded-md border border-gray-300 p-4 no-underline transition hover:border-black dark:border-gray-700 dark:hover:border-white" href="https://vercel.com/new/git/clone?repository-url=https%3A%2F%2Fgithub.com%2FAstear17%2FVercelDrive&env=NEXT_PUBLIC_SITE_TITLE,USER_PRINCIPAL_NAME,BASE_DIRECTORY,CLIENT_ID,CLIENT_SECRET,UPLOAD_PASSWORD,NEXT_PUBLIC_PROTECTED_ROUTES,KV_PREFIX,NEXT_PUBLIC_EMAIL,UPLOAD_CONFLICT_BEHAVIOR&buildCommand=pnpm+build&framework=nextjs&installCommand=pnpm+install">
+    <strong>Thiết lập đầy đủ</strong>
+    <span className="mt-1 block text-sm text-gray-600 dark:text-gray-400">Tải lên, thư mục bảo vệ, email, KV prefix và xử lý trùng tên.</span>
+  </a>
+</div>
+
+## 5. Kết nối Redis
+
+VercelDrive lưu `access_token` và `refresh_token` OAuth trong Redis. Nên dùng Upstash Redis trên Vercel vì tích hợp này có thể tự thêm `REDIS_URL` vào dự án.
+
+Sau khi có `REDIS_URL`, hãy redeploy dự án Vercel để biến môi trường mới được nạp.
+
+## 6. Xác thực VercelDrive
+
+Mở trang đã triển khai, ví dụ `https://your-project.vercel.app`. VercelDrive sẽ hướng dẫn bạn cấp quyền OAuth, đổi mã xác thực lấy token và lưu token vào Redis.
+
+<Callout>
+  Sau khi thiết lập thành công, VercelDrive đóng kênh xác thực OAuth để người truy cập khác không thể xác thực lại trang bằng token khác.
 </Callout>
