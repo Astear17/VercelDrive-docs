@@ -1,0 +1,23 @@
+# Nâng cao
+
+## Sử dụng Tên miền tùy chỉnh
+
+Để sử dụng tên miền tùy chỉnh, bạn có thể thiết lập trực tiếp trong cài đặt dự án trên Vercel. Vào tab **Settings > Domains** và thêm tên miền của bạn.
+
+## API Khác
+
+VercelDrive sử dụng các route API của Next.js để xử lý logic. Bạn có thể tìm thấy mã nguồn của chúng trong thư mục `/api`.
+
+- Xác thực OAuth.
+- Tìm kiếm tệp tin.
+- Tải tệp tin lên và lấy liên kết tải xuống trực tiếp.
+
+## Quyền truy cập API (Cập nhật)
+
+Để VercelDrive có thể tải lên tệp tin và tạo thư mục, bạn cần đảm bảo ứng dụng Azure của mình có các quyền sau:
+
+- `User.Read`
+- `Files.ReadWrite.All`
+- `offline_access`
+
+Nếu bạn trước đây sử dụng quyền chỉ đọc, bạn phải cấp quyền lại để sử dụng tính năng tải lên mới.

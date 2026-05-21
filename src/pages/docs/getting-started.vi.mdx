@@ -1,0 +1,68 @@
+import Callout from 'nextra-theme-docs/callout'
+
+# Bắt đầu
+
+## Rút gọn (TL;DR)
+
+<Callout emoji="⚡️">Dưới đây là hướng dẫn nhanh về cách triển khai VercelDrive của riêng bạn.</Callout>
+
+1. Bạn thậm chí không cần phải fork kho lưu trữ! Sử dụng nút [Triển khai 1 Click](https://vercel.com/new/git/clone?repository-url=https%3A%2F%2Fgithub.com%2FAstear17%2FVercelDrive).
+2. Điền các biến môi trường cần thiết trong quá trình triển khai trên Vercel (`NEXT_PUBLIC_SITE_TITLE`, `USER_PRINCIPAL_NAME`, `BASE_DIRECTORY`, `CLIENT_ID`, `CLIENT_SECRET`, `UPLOAD_PASSWORD`).
+3. Thiết lập cơ sở dữ liệu Upstash Redis và thêm biến môi trường `REDIS_URL`.
+4. Triển khai lại và hoàn tất xác thực OAuth trên trang web của bạn. 🎉
+
+VercelDrive xử lý xác thực, lưu trữ mã thông báo an toàn trong Redis và tự động đóng kênh xác thực sau đó.
+
+## Bắt đầu (hướng dẫn chi tiết!)
+
+VercelDrive sử dụng OneDrive của bạn làm máy chủ lưu trữ và hiển thị các tệp, hình ảnh, video, bài hát và tài liệu được lưu trữ trong OneDrive của bạn để người khác có thể xem trước, tải xuống và tải lên.
+
+![Ảnh chụp màn hình VercelDrive trên nhiều nền tảng](./_images/getting-started/od-vercel-idx.png)
+
+## Quyền API Microsoft Graph
+
+Trước khi triển khai, bạn phải cấu hình Đăng ký Ứng dụng Microsoft Entra (Azure AD) với các quyền API chính xác. Vì VercelDrive hỗ trợ tải tệp lên và tạo thư mục, bạn phải sử dụng các quyền Microsoft Graph được ủy quyền này:
+
+- `User.Read`
+- `Files.ReadWrite.All`
+- `offline_access`
+
+<Callout emoji="⚠️" type="warning">
+  Các phiên bản cũ hơn của ứng dụng này chỉ yêu cầu quyền truy cập chỉ đọc. Nếu bạn đang nâng cấp, bạn phải nâng cấp quyền của mình lên `Files.ReadWrite.All` và xác thực lại để cho phép tải tệp lên.
+</Callout>
+
+## Cấu hình Biến môi trường
+
+Khác với các phiên bản cũ hơn yêu cầu chỉnh sửa `config/site.config.js` và `config/api.config.js`, VercelDrive được cấu hình hoàn toàn thông qua các biến môi trường. Chuẩn bị các giá trị này trước khi triển khai:
+
+- `NEXT_PUBLIC_SITE_TITLE`: Tiêu đề hiển thị trên giao diện người dùng (ví dụ: `2Drive`)
+- `USER_PRINCIPAL_NAME`: Email tài khoản OneDrive cần truy cập (ví dụ: `example@outlook.com`)
+- `BASE_DIRECTORY`: Thư mục gốc OneDrive mà trang web hiển thị (ví dụ: `/` hoặc `/Public Drive`)
+- `CLIENT_ID`: ID Máy khách Đăng ký Ứng dụng Azure của bạn
+- `CLIENT_SECRET`: Bí mật máy khách Azure của bạn
+- `UPLOAD_PASSWORD`: Mật khẩu cho cổng xác thực tải lên ở phía máy chủ
+
+## Triển khai lên Vercel
+
+Nhấp vào nút bên dưới để bắt đầu triển khai chỉ với một cú nhấp chuột:
+
+[![Triển khai với Vercel](https://vercel.com/button)](https://vercel.com/new/git/clone?repository-url=https%3A%2F%2Fgithub.com%2FAstear17%2FVercelDrive&env=NEXT_PUBLIC_SITE_TITLE,USER_PRINCIPAL_NAME,BASE_DIRECTORY,CLIENT_ID,CLIENT_SECRET,UPLOAD_PASSWORD&buildCommand=pnpm+build&framework=nextjs&installCommand=pnpm+install)
+
+### Tạo kết nối Redis
+
+Cơ sở dữ liệu Redis được sử dụng để lưu trữ `access_tokens` và `refresh_tokens` OAuth.
+
+- Chúng tôi khuyên dùng **Upstash Redis**, nó miễn phí và tích hợp hoàn toàn với Vercel. 
+- Bạn có thể thêm tích hợp Upstash trực tiếp trong Vercel để tự động thêm biến môi trường `REDIS_URL`.
+
+### Triển khai lại trên Vercel
+
+Sau khi thiết lập `REDIS_URL`, hãy kích hoạt triển khai lại trong Vercel để áp dụng biến môi trường mới. Sau đó điều hướng đến URL đã triển khai của bạn.
+
+## Xác thực VercelDrive của bạn
+
+Truy cập trang web đã triển khai của bạn (ví dụ: `https://xxx.vercel.app`). Bạn sẽ được chuyển hướng đến trang thiết lập OAuth. Làm theo hướng dẫn để nhận mã xác thực, đổi lấy mã thông báo và lưu chúng vào Redis. 
+
+<Callout emoji="📢">
+  Sau khi thiết lập thành công, VercelDrive sẽ tự động đóng kênh xác thực OAuth. Điều này ngăn chặn những người dùng trái phép xác thực lại bằng mã thông báo của bạn.
+</Callout>
