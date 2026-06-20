@@ -1,19 +1,20 @@
-@import url('https://fonts.googleapis.com/css2?family=Geist+Mono:wght@100;200;300;400;500;600;700;800;900&family=Inter:wght@400;500;600;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Geist+Mono:wght@400;500;600;700&family=Inter:wght@400;500;600;700&display=swap');
 
 :root {
-  --bg: #0a0a0a;
-  --bg-secondary: #111111;
-  --bg-tertiary: #191919;
-  --border: #262626;
-  --border-hover: #333333;
-  --text: #a1a1a1;
-  --text-bright: #ededed;
-  --text-dim: #555555;
-  --accent: #00ff41;
-  --accent-dim: rgba(0, 255, 65, 0.12);
-  --accent-hover: rgba(0, 255, 65, 0.08);
-  --link: #00ff41;
-  --code-bg: #111111;
+  --bg: #0d1117;
+  --bg-secondary: #161b22;
+  --bg-tertiary: #1c2128;
+  --border: #30363d;
+  --border-hover: #484f58;
+  --text: #8b949e;
+  --text-bright: #e6edf3;
+  --text-dim: #484f58;
+  --accent: #2ea66a;
+  --accent-bright: #3fb950;
+  --accent-dim: rgba(46, 166, 106, 0.12);
+  --accent-hover: rgba(46, 166, 106, 0.06);
+  --link: #2ea66a;
+  --code-bg: #161b22;
 }
 
 html,
@@ -27,19 +28,21 @@ code,
 pre,
 kbd,
 .vd-mono {
-  font-family: 'Geist Mono', 'JetBrains Mono', 'Fira Code', 'Cascadia Code', ui-monospace, monospace;
+  font-family: 'Geist Mono', 'JetBrains Mono', 'Fira Code', ui-monospace, monospace;
 }
 
 body {
   background:
-    linear-gradient(to bottom, var(--bg) 0%, var(--bg) 100%),
-    repeating-linear-gradient(
-      0deg,
-      transparent,
-      transparent 2px,
-      rgba(255, 255, 255, 0.008) 2px,
-      rgba(255, 255, 255, 0.008) 4px
-    );
+    linear-gradient(to bottom, rgba(13, 17, 23, 0) 0%, rgba(13, 17, 23, 1) 400px),
+    fixed 0 0 / 24px 24px radial-gradient(#30363d 1px, transparent 0),
+    fixed 12px 12px / 24px 24px radial-gradient(#30363d 1px, transparent 0);
+}
+
+.dark body {
+  background:
+    linear-gradient(to bottom, rgba(13, 17, 23, 0) 0%, rgba(13, 17, 23, 1) 400px),
+    fixed 0 0 / 24px 24px radial-gradient(#30363d 1px, transparent 0),
+    fixed 12px 12px / 24px 24px radial-gradient(#30363d 1px, transparent 0);
 }
 
 .mt-8 {
@@ -52,5 +55,5 @@ body {
 
 ::selection {
   background: var(--accent);
-  color: var(--bg);
+  color: #fff;
 }

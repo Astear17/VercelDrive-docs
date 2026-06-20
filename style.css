@@ -1,5 +1,6 @@
 /* ═══════════════════════════════════════════════
-   VercelDrive — Terminal / Developer Aesthetic
+   VercelDrive — Clean, dot-grid, green-tint
+   Inspired by Render + GitHub Blogs
    ═══════════════════════════════════════════════ */
 
 .vd-home {
@@ -7,8 +8,15 @@
   overflow: hidden;
   margin: -2rem calc(50% - 50vw) 0;
   padding: 5rem max(2rem, calc((100vw - 72rem) / 2)) 3rem;
-  background: var(--bg);
-  border-bottom: 1px solid var(--border);
+  background:
+    radial-gradient(circle at 50% 0%, rgba(46, 166, 106, 0.10), transparent 36rem),
+    linear-gradient(180deg, rgba(13, 17, 23, 0.02), transparent 32rem);
+}
+
+.dark .vd-home {
+  background:
+    radial-gradient(circle at 50% 0%, rgba(46, 166, 106, 0.14), transparent 38rem),
+    linear-gradient(180deg, rgba(13, 17, 23, 0.95), rgba(13, 17, 23, 0.3) 40rem, transparent);
 }
 
 .vd-home::before {
@@ -16,15 +24,11 @@
   position: absolute;
   inset: 0;
   pointer-events: none;
-  background-image:
-    repeating-linear-gradient(
-      0deg,
-      transparent,
-      transparent 2px,
-      rgba(255, 255, 255, 0.015) 2px,
-      rgba(255, 255, 255, 0.015) 4px
-    );
-  opacity: 0.6;
+  background-image: radial-gradient(currentColor 1px, transparent 1px);
+  background-size: 24px 24px;
+  color: rgba(48, 54, 61, 0.5);
+  mask-image: linear-gradient(to bottom, black 20%, transparent 80%);
+  -webkit-mask-image: linear-gradient(to bottom, black 20%, transparent 80%);
 }
 
 .vd-home > * {
@@ -33,41 +37,22 @@
 
 .vd-home-title {
   margin: 0;
-  text-align: left;
-  font-family: 'Geist Mono', 'JetBrains Mono', ui-monospace, monospace;
-  font-size: clamp(2.5rem, 5vw, 4.5rem);
-  font-weight: 800;
-  line-height: 1;
-  letter-spacing: -0.04em;
+  text-align: center;
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+  font-size: clamp(2.5rem, 5vw, 4rem);
+  font-weight: 700;
+  line-height: 1.1;
+  letter-spacing: -0.03em;
   color: var(--text-bright);
 }
 
-.vd-home-title::after {
-  content: "_";
-  animation: blink 1s step-end infinite;
-  color: var(--accent);
-  font-weight: 400;
-}
-
-@keyframes blink {
-  50% { opacity: 0; }
-}
-
 .vd-home-subtitle {
-  margin: 1.25rem auto 0;
+  margin: 1rem auto 0;
   max-width: 48rem;
-  text-align: left;
+  text-align: center;
   color: var(--text-dim);
-  font-family: 'Geist Mono', 'JetBrains Mono', ui-monospace, monospace;
-  font-size: 0.875rem;
+  font-size: 1.05rem;
   line-height: 1.6;
-  letter-spacing: 0.01em;
-}
-
-.vd-home-subtitle::before {
-  content: "$ ";
-  color: var(--accent);
-  opacity: 0.6;
 }
 
 /* ─── Feature Grid ─── */
@@ -75,40 +60,34 @@
 .vd-features {
   display: grid;
   grid-template-columns: repeat(4, minmax(0, 1fr));
-  gap: 0;
+  gap: 0.75rem;
   margin: 2.5rem auto 0;
   max-width: 60rem;
-  border: 1px solid var(--border);
 }
 
 .vd-feature {
   display: flex;
   align-items: center;
   gap: 0.75rem;
-  border-right: 1px solid var(--border);
-  border-bottom: 1px solid var(--border);
+  border: 1px solid var(--border);
   padding: 0.85rem 1rem;
-  font-family: 'Geist Mono', 'JetBrains Mono', ui-monospace, monospace;
+  font-family: 'Geist Mono', ui-monospace, monospace;
   font-weight: 500;
-  font-size: 0.8rem;
+  font-size: 0.78rem;
   letter-spacing: 0.01em;
   color: var(--text);
   background: var(--bg-secondary);
-  transition: background 120ms ease;
-}
-
-.vd-feature:nth-child(4n) {
-  border-right: none;
+  transition: border-color 120ms ease, background 120ms ease;
 }
 
 .vd-feature:hover {
+  border-color: var(--accent);
   background: var(--accent-hover);
 }
 
 .vd-feature svg {
   flex: 0 0 auto;
   color: var(--accent);
-  opacity: 0.8;
 }
 
 /* ─── Body Copy ─── */
@@ -116,7 +95,7 @@
 .vd-home-copy {
   margin: 2.5rem auto 0;
   max-width: 54rem;
-  font-size: 0.95rem;
+  font-size: 1rem;
   line-height: 1.8;
   color: var(--text);
 }
@@ -127,7 +106,7 @@
   border: 1px solid var(--border);
   padding: 0.15em 0.4em;
   font-size: 0.85em;
-  color: var(--accent);
+  color: var(--accent-bright);
 }
 
 /* ─── Buttons ─── */
@@ -135,10 +114,9 @@
 .vd-actions {
   display: flex;
   flex-wrap: wrap;
-  gap: 0;
+  justify-content: center;
+  gap: 0.5rem;
   margin: 2rem 0;
-  border: 1px solid var(--border);
-  width: fit-content;
 }
 
 .vd-button {
@@ -146,40 +124,35 @@
   align-items: center;
   justify-content: center;
   min-height: 2.5rem;
-  border: none;
-  border-right: 1px solid var(--border);
-  padding: 0.55rem 1.2rem;
-  color: var(--text);
-  font-family: 'Geist Mono', 'JetBrains Mono', ui-monospace, monospace;
-  font-size: 0.8rem;
+  border: 1px solid var(--border);
+  padding: 0.5rem 1.1rem;
+  color: var(--text-bright);
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+  font-size: 0.85rem;
   font-weight: 500;
-  letter-spacing: 0.03em;
-  text-transform: uppercase;
   text-decoration: none;
   background: var(--bg-secondary);
-  transition: background 100ms ease, color 100ms ease;
+  transition: border-color 120ms ease, background 120ms ease;
   cursor: pointer;
 }
 
-.vd-button:last-child {
-  border-right: none;
-}
-
 .vd-button:hover {
-  background: var(--accent-hover);
-  color: var(--text-bright);
+  border-color: var(--border-hover);
+  background: var(--bg-tertiary);
   text-decoration: none;
 }
 
 .vd-button-primary {
+  border-color: var(--accent);
   background: var(--accent);
-  color: var(--bg);
-  font-weight: 700;
+  color: #fff;
+  font-weight: 600;
 }
 
 .vd-button-primary:hover {
-  background: #00cc33;
-  color: var(--bg);
+  background: var(--accent-bright);
+  border-color: var(--accent-bright);
+  color: #fff;
 }
 
 /* ─── Demo Image ─── */
@@ -189,7 +162,7 @@
   width: min(100%, 58rem);
   margin: 3rem auto 0;
   border: 1px solid var(--border);
-  filter: grayscale(0.15) contrast(1.05);
+  box-shadow: 0 8px 40px rgba(0, 0, 0, 0.3);
 }
 
 /* ─── Deploy Cards ─── */
@@ -197,36 +170,30 @@
 .vd-deploy-grid {
   display: grid;
   grid-template-columns: repeat(2, minmax(0, 1fr));
-  gap: 0;
+  gap: 0.75rem;
   margin: 1.5rem 0;
-  border: 1px solid var(--border);
 }
 
 .vd-deploy-card {
   display: block;
-  border-right: 1px solid var(--border);
-  border-bottom: 1px solid var(--border);
+  border: 1px solid var(--border);
   padding: 1rem 1.25rem;
   color: inherit;
   text-decoration: none;
   background: var(--bg-secondary);
-  transition: background 100ms ease;
-}
-
-.vd-deploy-card:nth-child(2n) {
-  border-right: none;
+  transition: border-color 120ms ease;
 }
 
 .vd-deploy-card:hover {
-  background: var(--accent-hover);
+  border-color: var(--accent);
   text-decoration: none;
 }
 
 .vd-deploy-card strong {
   display: block;
   font-family: 'Geist Mono', ui-monospace, monospace;
-  font-size: 0.8rem;
-  color: var(--accent);
+  font-size: 0.78rem;
+  color: var(--accent-bright);
   letter-spacing: 0.03em;
   text-transform: uppercase;
   font-weight: 600;
@@ -236,7 +203,7 @@
   display: block;
   margin-top: 0.35rem;
   color: var(--text-dim);
-  font-size: 0.82rem;
+  font-size: 0.85rem;
   line-height: 1.45;
 }
 
@@ -247,32 +214,13 @@
     padding: 3rem 1rem 2rem;
   }
 
-  .vd-features {
-    grid-template-columns: 1fr;
-  }
-
-  .vd-feature {
-    border-right: none;
-  }
-
+  .vd-features,
   .vd-deploy-grid {
     grid-template-columns: 1fr;
   }
 
-  .vd-deploy-card {
-    border-right: none;
-  }
-
   .vd-actions {
     flex-direction: column;
-  }
-
-  .vd-button {
-    border-right: none;
-    border-bottom: 1px solid var(--border);
-  }
-
-  .vd-button:last-child {
-    border-bottom: none;
+    align-items: stretch;
   }
 }
