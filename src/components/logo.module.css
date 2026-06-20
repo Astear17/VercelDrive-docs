@@ -4,13 +4,14 @@
   margin: 0 0.5rem 0 0.5rem;
 }
 .logo__title {
-  font-weight: 600;
+  font-family: var(--font-sans);
+  font-weight: 700;
   font-size: 0.95rem;
   line-height: 1.5rem;
   letter-spacing: -0.01em;
 }
 .logo__subtitle {
-  font-family: 'Geist Mono', ui-monospace, monospace;
+  font-family: var(--font-mono);
   font-size: 0.65rem;
   line-height: 1rem;
   color: var(--text-dim, #484f58);

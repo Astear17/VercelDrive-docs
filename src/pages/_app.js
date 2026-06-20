@@ -2,6 +2,19 @@ import '../../style.css'
 import '../style.css'
 import 'nextra-theme-docs/style.css'
 import Script from 'next/script'
+import localFont from 'next/font/local'
+
+const geistSans = localFont({
+  src: '../../node_modules/geist/dist/fonts/geist-sans/Geist-Variable.woff2',
+  variable: '--font-geist-sans',
+  display: 'swap',
+})
+
+const geistMono = localFont({
+  src: '../../node_modules/geist/dist/fonts/geist-mono/GeistMono-Variable.woff2',
+  variable: '--font-geist-mono',
+  display: 'swap',
+})
 
 export default function Nextra({ Component, pageProps }) {
   return (
@@ -18,7 +31,9 @@ export default function Nextra({ Component, pageProps }) {
           gtag('config', '${process.env.NEXT_PUBLIC_ANALYTICS_ID}');
         `}
       </Script>
-      <Component {...pageProps} />
+      <div className={`${geistSans.variable} ${geistMono.variable}`}>
+        <Component {...pageProps} />
+      </div>
     </>
   )
 }

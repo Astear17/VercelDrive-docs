@@ -1,4 +1,4 @@
-@import url('https://fonts.googleapis.com/css2?family=Geist+Mono:wght@400;500;600;700&family=Inter:wght@400;500;600;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Geist+Mono:wght@400;500;600;700&display=swap');
 
 :root {
   --bg: #0d1117;
@@ -15,11 +15,13 @@
   --accent-hover: rgba(0, 120, 212, 0.06);
   --link: #0078d4;
   --code-bg: #161b22;
+  --font-sans: var(--font-geist-sans), -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  --font-mono: var(--font-geist-mono), 'JetBrains Mono', 'Fira Code', ui-monospace, monospace;
 }
 
 html,
 body {
-  font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  font-family: var(--font-sans);
   background: var(--bg);
   color: var(--text);
 }
@@ -28,7 +30,7 @@ code,
 pre,
 kbd,
 .vd-mono {
-  font-family: 'Geist Mono', 'JetBrains Mono', 'Fira Code', ui-monospace, monospace;
+  font-family: var(--font-mono);
 }
 
 body {
@@ -54,8 +56,6 @@ body {
 }
 
 ::selection {
-  background: var(--accent);
-  color: #fff;
+  background: #fff;
+  color: #000;
 }
-
-@import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@500;600;700;800&display=swap');
