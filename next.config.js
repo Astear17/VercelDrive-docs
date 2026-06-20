@@ -1,8 +1,7 @@
 const withNextra = require('nextra')({
   theme: 'nextra-theme-docs',
   themeConfig: './src/theme.config.js',
-  unstable_flexsearch: true,
-  unstable_staticImage: true
+  defaultShowCopyCode: true
 })
 
 module.exports = withNextra({
@@ -29,5 +28,8 @@ module.exports = withNextra({
       }
     ]
   },
-  reactStrictMode: true
+  reactStrictMode: true,
+  images: {
+    unoptimized: true
+  }
 })

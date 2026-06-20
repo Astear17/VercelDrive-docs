@@ -3,7 +3,6 @@ import CryptoJS from 'crypto-js'
 
 import styles from './encryption.module.css'
 
-// This function is identical to the implementation in onedrive-vercel-index
 // Matches the AES obfuscation expected by VercelDrive OAuth configuration.
 const obfuscateToken = token => {
   const AES_SECRET_KEY = 'onedrive-vercel-index'
