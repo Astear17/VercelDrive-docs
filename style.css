@@ -9,8 +9,8 @@
   margin: -2rem calc(50% - 50vw) 0;
   padding: 5rem max(2rem, calc((100vw - 72rem) / 2)) 3rem;
   background:
-    radial-gradient(circle at 50% 0%, rgba(0, 120, 212, 0.10), transparent 36rem),
-    linear-gradient(180deg, rgba(13, 17, 23, 0.02), transparent 32rem);
+    radial-gradient(circle at 50% 0%, rgba(0, 120, 212, 0.06), transparent 36rem),
+    linear-gradient(180deg, rgba(0, 0, 0, 0.01), transparent 32rem);
 }
 
 .dark .vd-home {
@@ -26,9 +26,13 @@
   pointer-events: none;
   background-image: radial-gradient(currentColor 1px, transparent 1px);
   background-size: 24px 24px;
-  color: rgba(48, 54, 61, 0.5);
+  color: rgba(208, 215, 222, 0.5);
   mask-image: linear-gradient(to bottom, black 20%, transparent 80%);
   -webkit-mask-image: linear-gradient(to bottom, black 20%, transparent 80%);
+}
+
+.dark .vd-home::before {
+  color: rgba(48, 54, 61, 0.5);
 }
 
 .vd-home > * {
@@ -162,6 +166,10 @@
   width: min(100%, 58rem);
   margin: 3rem auto 0;
   border: 1px solid var(--border);
+  box-shadow: 0 8px 40px rgba(0, 0, 0, 0.08);
+}
+
+.dark .vd-demo-image {
   box-shadow: 0 8px 40px rgba(0, 0, 0, 0.3);
 }
 
