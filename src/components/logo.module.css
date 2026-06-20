@@ -4,12 +4,17 @@
   margin: 0 0.5rem 0 0.5rem;
 }
 .logo__title {
-  font-weight: 600;
-  font-size: 1rem;
+  font-family: 'Geist Mono', 'JetBrains Mono', ui-monospace, monospace;
+  font-weight: 700;
+  font-size: 0.95rem;
   line-height: 1.5rem;
+  letter-spacing: -0.02em;
 }
 .logo__subtitle {
-  font-size: 0.75rem;
+  font-family: 'Geist Mono', 'JetBrains Mono', ui-monospace, monospace;
+  font-size: 0.65rem;
   line-height: 1rem;
   color: rgb(107 114 128);
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
 }
