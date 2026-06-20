@@ -1,4 +1,4 @@
-import { useRouter } from 'nextra/hooks'
+import { useState, useEffect } from 'react'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faCloudArrowUp, faGaugeHigh, faPalette, faServer } from '@fortawesome/free-solid-svg-icons'
 
@@ -18,9 +18,13 @@ const featureTranslations = {
 }
 
 export default function Features() {
-  const { locale: rawLocale, defaultLocale: rawDefaultLocale } = useRouter()
-  const locale = rawLocale || 'en'
-  const defaultLocale = rawDefaultLocale || 'en'
+  const [locale, setLocale] = useState('en')
+
+  useEffect(() => {
+    const path = window.location.pathname
+    if (path.startsWith('/vi')) setLocale('vi')
+  }, [])
+
   const icons = {
     'free-to-host': faServer,
     'setup-time': faCloudArrowUp,
@@ -28,12 +32,14 @@ export default function Features() {
     'highly-customisable': faPalette,
   }
 
+  const t = featureTranslations[locale] || featureTranslations.en
+
   return (
     <div className="vd-features">
       {['free-to-host', 'setup-time', 'fast-n-responsive', 'highly-customisable'].map(feature => (
         <div key={feature} className="vd-feature">
           <FontAwesomeIcon icon={icons[feature]} width={18} />
-          {featureTranslations[locale][feature] ?? featureTranslations[defaultLocale][feature]}
+          {t[feature]}
         </div>
       ))}
     </div>

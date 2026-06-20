@@ -1,6 +1,5 @@
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import CryptoJS from 'crypto-js'
-import { useRouter } from 'nextra/hooks'
 
 import styles from './encryption.module.css'
 
@@ -25,10 +24,14 @@ const i18n = {
 }
 
 export default function Encryption() {
-  const { locale: rawLocale } = useRouter()
-  const locale = rawLocale || 'en'
-  const t = i18n[locale] || i18n.en
+  const [locale, setLocale] = useState('en')
 
+  useEffect(() => {
+    const path = window.location.pathname
+    if (path.startsWith('/vi')) setLocale('vi')
+  }, [])
+
+  const t = i18n[locale] || i18n.en
   const [token, setToken] = useState('')
   const obfuscatedToken = token && obfuscateToken(token)
 
