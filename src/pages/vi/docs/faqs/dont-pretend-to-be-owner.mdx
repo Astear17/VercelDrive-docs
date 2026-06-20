@@ -1,17 +1,17 @@
 import { Callout } from 'nextra/components'
 
-# Do not pretend to be the site owner?
+# "Đừng giả danh chủ sở hữu trang web"?
 
-If you see this on the third step during initial setup ...
+Nếu bạn thấy thông báo này ở bước thứ ba trong quá trình thiết lập ban đầu ...
 
-![Do not pretend to be the site owner](../_images/faqs/dont-pretend-to-be-site-owner.png)
+![Đừng giả danh chủ sở hữu trang web](../_images/faqs/dont-pretend-to-be-site-owner.png)
 
-It is because we need to verify if **you** are really **you** before saving the actual tokens into your database. If you see this, **then the email you defined in `site.config.js` under `userPrincipalName` is wrong.**
+Lý do là hệ thống cần xác minh **bạn** có thật sự là **bạn** trước khi lưu token vào cơ sở dữ liệu. Nếu thấy thông báo này, **email bạn đã cấu hình trong `USER_PRINCIPAL_NAME` là sai.**
 
-You must configure this email to be **exactly the same** as the one you use to log into your Microsoft account during the second step of OAuth. Check for typos, domain names, and incorrect capitalisations. **Must be exactly the same!** 😡
+Email này phải **hoàn toàn trùng khớp** với email bạn dùng để đăng nhập tài khoản Microsoft ở bước thứ hai của OAuth. Hãy kiểm tra lỗi chính tả, tên miền và chữ hoa/thường. **Phải trùng hoàn toàn!** 😡
 
 <Callout emoji="💬">
-Related discussions:
+  Các thảo luận liên quan:
 
 - [Verify identity against site.json defined user during OAuth #241](https://github.com/Astear17/VercelDrive/discussions/241)
 - [Do not pretend to be the site owner #250](https://github.com/Astear17/VercelDrive/discussions/250)

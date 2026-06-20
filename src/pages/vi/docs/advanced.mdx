@@ -71,23 +71,23 @@ Quyền delegated bắt buộc:
   Đổi quyền không cập nhật token OAuth đã lưu. Hãy xóa `<KV_PREFIX>access_token` và `<KV_PREFIX>refresh_token` trong Redis/KV, rồi xác thực lại.
 </Callout>
 
-## Biến môi trường và tài liệu liên quan
+## Biến môi trường (Environment Variables) và tài liệu liên quan
 
 Các biến này thay thế cách cấu hình cũ trong `config/api.config.js` và `config/site.config.js`.
 
-| Biến | Bắt buộc | Tài liệu liên quan |
-| --- | --- | --- |
-| `NEXT_PUBLIC_SITE_TITLE` | Có | Xem [Tùy chỉnh cấu hình](./custom-configs#site-title). |
-| `USER_PRINCIPAL_NAME` | Có | Email tài khoản OneDrive. Xem [Bắt đầu](./getting-started#3-chuan-bi-bien-moi-truong). |
-| `BASE_DIRECTORY` | Có | Xem [Tùy chỉnh cấu hình](./custom-configs#base-directory). |
-| `CLIENT_ID` | Có | Lấy từ trang overview của Microsoft Entra App Registration. |
-| `CLIENT_SECRET` | Có | AES-obfuscate bằng công cụ ở trên. |
-| `REDIS_URL` | Có | Xem [Cache](./cache) về Redis và lưu token. |
-| `UPLOAD_PASSWORD` | Chỉ khi bật upload | Xem [Cổng mật khẩu tải lên](#cong-mat-khau-tai-len). |
-| `NEXT_PUBLIC_PROTECTED_ROUTES` | Tùy chọn | Xem [Thư mục bảo vệ bằng mật khẩu](./features/protected-folders). |
-| `KV_PREFIX` | Tùy chọn | Dùng khi nhiều bản triển khai dùng chung một Redis database. |
-| `NEXT_PUBLIC_EMAIL` | Tùy chọn | Xem [Tùy chỉnh cấu hình](./custom-configs#contact-email). |
-| `UPLOAD_CONFLICT_BEHAVIOR` | Tùy chọn | Xem [Xử lý trùng tên khi tải lên](#xu-ly-trung-ten-khi-tai-len). |
+| Biến | Bắt buộc | Mô tả | Tài liệu liên quan |
+| --- | --- | --- | --- |
+| `NEXT_PUBLIC_SITE_TITLE` | Có | Tiêu đề hiển thị trên giao diện, ví dụ `2Drive` | [Tùy chỉnh cấu hình](./custom-configs#site-title) |
+| `USER_PRINCIPAL_NAME` | Có | Email tài khoản OneDrive, ví dụ `example@outlook.com` | [Bắt đầu](./getting-started#3-chuan-bi-bien-moi-truong) |
+| `BASE_DIRECTORY` | Có | Thư mục OneDrive gốc được hiển thị trên trang | [Tùy chỉnh cấu hình](./custom-configs#base-directory) |
+| `CLIENT_ID` | Có | Application (client) ID từ Microsoft Entra App Registration | [Đăng ký ứng dụng](#dang-ky-ung-dung-microsoft-entra) |
+| `CLIENT_SECRET` | Có | Client secret đã được AES-obfuscate bằng công cụ ở trên | [Client Secret](#client-secret) |
+| `REDIS_URL` | Có | Chuỗi kết nối Redis (Upstash tự thêm khi tích hợp Vercel) | [Cache](./cache) |
+| `UPLOAD_PASSWORD` | Chỉ khi bật upload | Mật khẩu phía máy chủ để bảo vệ việc tải lên | [Cổng mật khẩu tải lên](#cong-mat-khau-tai-len) |
+| `NEXT_PUBLIC_PROTECTED_ROUTES` | Tùy chọn | Danh sách thư mục cần mật khẩu, phân tách bằng dấu phẩy | [Thư mục bảo vệ](./features/protected-folders) |
+| `KV_PREFIX` | Tùy chọn | Tiền tố khóa Redis khi nhiều bản triển khai dùng chung Redis | [Cache](./cache) |
+| `NEXT_PUBLIC_EMAIL` | Tùy chọn | Email liên hệ hiển thị ở header trang | [Tùy chỉnh cấu hình](./custom-configs#contact-email) |
+| `UPLOAD_CONFLICT_BEHAVIOR` | Tùy chọn | Xử lý khi tải lên trùng tên: `rename`, `replace` hoặc `fail` | [Xử lý trùng tên](#xu-ly-trung-ten-khi-tai-len) |
 
 Chỉ các biến thật sự cần xuất hiện trong trình duyệt mới nên bắt đầu bằng `NEXT_PUBLIC_`.
 

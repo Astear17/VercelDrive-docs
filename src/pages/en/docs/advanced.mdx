@@ -71,23 +71,23 @@ Set `UPLOAD_PASSWORD` in Vercel. You can also set `UPLOAD_CONFLICT_BEHAVIOR` to 
   Changing permissions does not update already stored OAuth tokens. Clear `<KV_PREFIX>access_token` and `<KV_PREFIX>refresh_token` from Redis/KV, then authenticate again.
 </Callout>
 
-## Environment Variables And Resources
+## Environment Variables and Resources
 
 These variables replace the old `config/api.config.js` and `config/site.config.js` setup.
 
-| Variable | Required | Resource |
-| --- | --- | --- |
-| `NEXT_PUBLIC_SITE_TITLE` | Yes | See [Custom configs](./custom-configs#site-title). |
-| `USER_PRINCIPAL_NAME` | Yes | The OneDrive account email. See [Getting Started](./getting-started#3-prepare-environment-variables). |
-| `BASE_DIRECTORY` | Yes | See [Custom configs](./custom-configs#base-directory). |
-| `CLIENT_ID` | Yes | From the Microsoft Entra App Registration overview. |
-| `CLIENT_SECRET` | Yes | AES-obfuscated with the tool above. |
-| `REDIS_URL` | Yes | See [Cache](./cache) for Redis and token storage. |
-| `UPLOAD_PASSWORD` | Upload mode only | See [Password upload gate](#password-upload-gate). |
-| `NEXT_PUBLIC_PROTECTED_ROUTES` | Optional | See [Password protected folders](./features/protected-folders). |
-| `KV_PREFIX` | Optional | Use when several deployments share one Redis database. |
-| `NEXT_PUBLIC_EMAIL` | Optional | See [Custom configs](./custom-configs#contact-email). |
-| `UPLOAD_CONFLICT_BEHAVIOR` | Optional | See [Upload conflict behavior](#upload-conflict-behavior). |
+| Variable | Required | Description | Resource |
+| --- | --- | --- | --- |
+| `NEXT_PUBLIC_SITE_TITLE` | Yes | Title shown in the UI, for example `2Drive` | [Custom configs](./custom-configs#site-title) |
+| `USER_PRINCIPAL_NAME` | Yes | OneDrive account email, for example `example@outlook.com` | [Getting Started](./getting-started#3-prepare-environment-variables) |
+| `BASE_DIRECTORY` | Yes | Root OneDrive folder exposed by the site | [Custom configs](./custom-configs#base-directory) |
+| `CLIENT_ID` | Yes | Application (client) ID from Microsoft Entra App Registration | [App Registration](#microsoft-entra-app-registration) |
+| `CLIENT_SECRET` | Yes | AES-obfuscated client secret using the tool above | [Client Secret](#client-secret) |
+| `REDIS_URL` | Yes | Redis connection string (Upstash auto-injects on Vercel) | [Cache](./cache) |
+| `UPLOAD_PASSWORD` | Upload mode only | Server-side password that protects uploads | [Password upload gate](#password-upload-gate) |
+| `NEXT_PUBLIC_PROTECTED_ROUTES` | Optional | Comma-separated protected folder paths | [Password protected folders](./features/protected-folders) |
+| `KV_PREFIX` | Optional | Redis key prefix when multiple deployments share one Redis | [Cache](./cache) |
+| `NEXT_PUBLIC_EMAIL` | Optional | Contact email shown in the site header | [Custom configs](./custom-configs#contact-email) |
+| `UPLOAD_CONFLICT_BEHAVIOR` | Optional | Duplicate-name behavior: `rename`, `replace`, or `fail` | [Upload conflict behavior](#upload-conflict-behavior) |
 
 Only variables intentionally used in the browser should start with `NEXT_PUBLIC_`.
 

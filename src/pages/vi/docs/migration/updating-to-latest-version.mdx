@@ -1,30 +1,30 @@
-# Updating to the latest version
+# Cập nhật lên phiên bản mới nhất
 
-Basically, you are syncing a fork of a repository to keep your repository up-to-date with my upstream repository. So, check out [GitHub - Syncing a fork](https://docs.github.com/en/pull-requests/collaborating-with-pull-requests/working-with-forks/syncing-a-fork).
+Về cơ bản, bạn đang đồng bộ một fork của kho lưu trữ để giữ kho của bạn cập nhật với kho gốc (upstream). Xem thêm [GitHub - Syncing a fork](https://docs.github.com/en/pull-requests/collaborating-with-pull-requests/working-with-forks/syncing-a-fork).
 
-## From the Web UI
+## Từ giao diện Web
 
-- On GitHub, navigate to the main page of the forked repository that you want to sync with the upstream repository.
-- Select the Fetch upstream drop-down.
-- Review the details about the commits from the upstream repository, then click Fetch and merge.
-- If the changes from the upstream repository cause conflicts, GitHub will prompt you to create a pull request to resolve the conflicts.
+- Trên GitHub, mở trang chính của kho đã fork muốn đồng bộ với kho gốc.
+- Chọn menu thả xuống **Fetch upstream**.
+- Xem lại chi tiết các commit từ kho gốc, rồi bấm **Fetch and merge**.
+- Nếu thay đổi từ kho gốc gây xung đột, GitHub sẽ yêu cầu bạn tạo pull request để giải quyết.
 
-## Command line
+## Dòng lệnh
 
-Clone the forked repo locally and:
+Clone kho đã fork về máy cục bộ và:
 
 ```bash
-# Fetch upstream changes
+# Lấy thay đổi từ upstream
 git fetch upstream
 
-# Checkout your fork's local default branch - main
+# Chuyển sang nhánh mặc định - main
 git checkout main
 
-# Merge upstream changes into your fork
+# Gộp thay đổi từ upstream vào fork
 git merge upstream/main
 
-# If there are conflicts - manually resolve them locally
-# Commit changes and push to GitHub
+# Nếu có xung đột - giải quyết thủ công tại chỗ
+# Commit và đẩy lên GitHub
 git commit -m "xxx"
 git push
 ```

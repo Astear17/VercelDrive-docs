@@ -48,28 +48,33 @@ Các biến tùy chọn hữu ích:
 
 Không dùng tiền tố `NEXT_PUBLIC_` cho secret, Redis, Microsoft token, `USER_PRINCIPAL_NAME`, `BASE_DIRECTORY`, `CLIENT_ID`, `CLIENT_SECRET` hoặc `UPLOAD_PASSWORD`.
 
-## 4. Triển khai lên Vercel
+## 4. Triển khai lên Vercel (Deploy to Vercel)
 
 Chọn một nút triển khai phù hợp với chế độ và biến bạn cần.
 
-<div className="vd-deploy-grid">
-  <a className="vd-deploy-card" href="https://vercel.com/new/git/clone?repository-url=https%3A%2F%2Fgithub.com%2FAstear17%2FVercelDrive&env=NEXT_PUBLIC_SITE_TITLE,USER_PRINCIPAL_NAME,BASE_DIRECTORY,CLIENT_ID,CLIENT_SECRET&buildCommand=pnpm+build&framework=nextjs&installCommand=pnpm+install">
-    <strong>Triển khai chỉ đọc</strong>
-    <span className="mt-1 block text-sm text-gray-600 dark:text-gray-400">Duyệt, xem trước, chia sẻ và tải xuống.</span>
-  </a>
-  <a className="vd-deploy-card" href="https://vercel.com/new/git/clone?repository-url=https%3A%2F%2Fgithub.com%2FAstear17%2FVercelDrive&env=NEXT_PUBLIC_SITE_TITLE,USER_PRINCIPAL_NAME,BASE_DIRECTORY,CLIENT_ID,CLIENT_SECRET,UPLOAD_PASSWORD&buildCommand=pnpm+build&framework=nextjs&installCommand=pnpm+install">
-    <strong>Triển khai có tải lên</strong>
-    <span className="mt-1 block text-sm text-gray-600 dark:text-gray-400">Thêm `UPLOAD_PASSWORD` cho chế độ đọc/ghi.</span>
-  </a>
-  <a className="vd-deploy-card" href="https://vercel.com/new/git/clone?repository-url=https%3A%2F%2Fgithub.com%2FAstear17%2FVercelDrive&env=NEXT_PUBLIC_SITE_TITLE,USER_PRINCIPAL_NAME,BASE_DIRECTORY,CLIENT_ID,CLIENT_SECRET,NEXT_PUBLIC_PROTECTED_ROUTES&buildCommand=pnpm+build&framework=nextjs&installCommand=pnpm+install">
-    <strong>Chỉ đọc với thư mục bảo vệ</strong>
-    <span className="mt-1 block text-sm text-gray-600 dark:text-gray-400">Thêm `NEXT_PUBLIC_PROTECTED_ROUTES`.</span>
-  </a>
-  <a className="vd-deploy-card" href="https://vercel.com/new/git/clone?repository-url=https%3A%2F%2Fgithub.com%2FAstear17%2FVercelDrive&env=NEXT_PUBLIC_SITE_TITLE,USER_PRINCIPAL_NAME,BASE_DIRECTORY,CLIENT_ID,CLIENT_SECRET,UPLOAD_PASSWORD,NEXT_PUBLIC_PROTECTED_ROUTES,KV_PREFIX,NEXT_PUBLIC_EMAIL,UPLOAD_CONFLICT_BEHAVIOR&buildCommand=pnpm+build&framework=nextjs&installCommand=pnpm+install">
-    <strong>Thiết lập đầy đủ</strong>
-    <span className="mt-1 block text-sm text-gray-600 dark:text-gray-400">Tải lên, thư mục bảo vệ, email, KV prefix và xử lý trùng tên.</span>
-  </a>
-</div>
+### Triển khai chỉ đọc (Read-only)
+
+Duyệt, xem trước, chia sẻ và tải xuống.
+
+[![Deploy with Vercel](https://vercel.com/button)](https://vercel.com/new/git/clone?repository-url=https%3A%2F%2Fgithub.com%2FAstear17%2FVercelDrive&env=NEXT_PUBLIC_SITE_TITLE,USER_PRINCIPAL_NAME,BASE_DIRECTORY,CLIENT_ID,CLIENT_SECRET&buildCommand=pnpm+build&framework=nextjs&installCommand=pnpm+install)
+
+### Triển khai có tải lên (Read/Write)
+
+Thêm `UPLOAD_PASSWORD` cho chế độ đọc/ghi.
+
+[![Deploy with Vercel](https://vercel.com/button)](https://vercel.com/new/git/clone?repository-url=https%3A%2F%2Fgithub.com%2FAstear17%2FVercelDrive&env=NEXT_PUBLIC_SITE_TITLE,USER_PRINCIPAL_NAME,BASE_DIRECTORY,CLIENT_ID,CLIENT_SECRET,UPLOAD_PASSWORD&buildCommand=pnpm+build&framework=nextjs&installCommand=pnpm+install)
+
+### Chỉ đọc với thư mục bảo vệ (Read-only + Protected Routes)
+
+Thêm `NEXT_PUBLIC_PROTECTED_ROUTES`.
+
+[![Deploy with Vercel](https://vercel.com/button)](https://vercel.com/new/git/clone?repository-url=https%3A%2F%2Fgithub.com%2FAstear17%2FVercelDrive&env=NEXT_PUBLIC_SITE_TITLE,USER_PRINCIPAL_NAME,BASE_DIRECTORY,CLIENT_ID,CLIENT_SECRET,NEXT_PUBLIC_PROTECTED_ROUTES&buildCommand=pnpm+build&framework=nextjs&installCommand=pnpm+install)
+
+### Thiết lập đầy đủ (Full setup)
+
+Tải lên, thư mục bảo vệ, email, KV prefix và xử lý trùng tên.
+
+[![Deploy with Vercel](https://vercel.com/button)](https://vercel.com/new/git/clone?repository-url=https%3A%2F%2Fgithub.com%2FAstear17%2FVercelDrive&env=NEXT_PUBLIC_SITE_TITLE,USER_PRINCIPAL_NAME,BASE_DIRECTORY,CLIENT_ID,CLIENT_SECRET,UPLOAD_PASSWORD,NEXT_PUBLIC_PROTECTED_ROUTES,KV_PREFIX,NEXT_PUBLIC_EMAIL,UPLOAD_CONFLICT_BEHAVIOR&buildCommand=pnpm+build&framework=nextjs&installCommand=pnpm+install)
 
 ## 5. Kết nối Redis
 

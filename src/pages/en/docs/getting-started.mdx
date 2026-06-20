@@ -52,24 +52,29 @@ Do not use the `NEXT_PUBLIC_` prefix for secrets, Redis values, Microsoft tokens
 
 Use one of these deployment buttons based on the mode and variables you need.
 
-<div className="vd-deploy-grid">
-  <a className="vd-deploy-card" href="https://vercel.com/new/git/clone?repository-url=https%3A%2F%2Fgithub.com%2FAstear17%2FVercelDrive&env=NEXT_PUBLIC_SITE_TITLE,USER_PRINCIPAL_NAME,BASE_DIRECTORY,CLIENT_ID,CLIENT_SECRET&buildCommand=pnpm+build&framework=nextjs&installCommand=pnpm+install">
-    <strong>Deploy read-only</strong>
-    <span className="mt-1 block text-sm text-gray-600 dark:text-gray-400">Browsing, previews, sharing, and downloads.</span>
-  </a>
-  <a className="vd-deploy-card" href="https://vercel.com/new/git/clone?repository-url=https%3A%2F%2Fgithub.com%2FAstear17%2FVercelDrive&env=NEXT_PUBLIC_SITE_TITLE,USER_PRINCIPAL_NAME,BASE_DIRECTORY,CLIENT_ID,CLIENT_SECRET,UPLOAD_PASSWORD&buildCommand=pnpm+build&framework=nextjs&installCommand=pnpm+install">
-    <strong>Deploy with uploads</strong>
-    <span className="mt-1 block text-sm text-gray-600 dark:text-gray-400">Adds `UPLOAD_PASSWORD` for read/write mode.</span>
-  </a>
-  <a className="vd-deploy-card" href="https://vercel.com/new/git/clone?repository-url=https%3A%2F%2Fgithub.com%2FAstear17%2FVercelDrive&env=NEXT_PUBLIC_SITE_TITLE,USER_PRINCIPAL_NAME,BASE_DIRECTORY,CLIENT_ID,CLIENT_SECRET,NEXT_PUBLIC_PROTECTED_ROUTES&buildCommand=pnpm+build&framework=nextjs&installCommand=pnpm+install">
-    <strong>Read-only with protected routes</strong>
-    <span className="mt-1 block text-sm text-gray-600 dark:text-gray-400">Adds `NEXT_PUBLIC_PROTECTED_ROUTES`.</span>
-  </a>
-  <a className="vd-deploy-card" href="https://vercel.com/new/git/clone?repository-url=https%3A%2F%2Fgithub.com%2FAstear17%2FVercelDrive&env=NEXT_PUBLIC_SITE_TITLE,USER_PRINCIPAL_NAME,BASE_DIRECTORY,CLIENT_ID,CLIENT_SECRET,UPLOAD_PASSWORD,NEXT_PUBLIC_PROTECTED_ROUTES,KV_PREFIX,NEXT_PUBLIC_EMAIL,UPLOAD_CONFLICT_BEHAVIOR&buildCommand=pnpm+build&framework=nextjs&installCommand=pnpm+install">
-    <strong>Full setup</strong>
-    <span className="mt-1 block text-sm text-gray-600 dark:text-gray-400">Uploads, protected routes, email, KV prefix, and conflict behavior.</span>
-  </a>
-</div>
+### Read-only Deploy
+
+Browsing, previews, sharing, and downloads.
+
+[![Deploy with Vercel](https://vercel.com/button)](https://vercel.com/new/git/clone?repository-url=https%3A%2F%2Fgithub.com%2FAstear17%2FVercelDrive&env=NEXT_PUBLIC_SITE_TITLE,USER_PRINCIPAL_NAME,BASE_DIRECTORY,CLIENT_ID,CLIENT_SECRET&buildCommand=pnpm+build&framework=nextjs&installCommand=pnpm+install)
+
+### Deploy with Uploads
+
+Adds `UPLOAD_PASSWORD` for read/write mode.
+
+[![Deploy with Vercel](https://vercel.com/button)](https://vercel.com/new/git/clone?repository-url=https%3A%2F%2Fgithub.com%2FAstear17%2FVercelDrive&env=NEXT_PUBLIC_SITE_TITLE,USER_PRINCIPAL_NAME,BASE_DIRECTORY,CLIENT_ID,CLIENT_SECRET,UPLOAD_PASSWORD&buildCommand=pnpm+build&framework=nextjs&installCommand=pnpm+install)
+
+### Read-only with Protected Routes
+
+Adds `NEXT_PUBLIC_PROTECTED_ROUTES`.
+
+[![Deploy with Vercel](https://vercel.com/button)](https://vercel.com/new/git/clone?repository-url=https%3A%2F%2Fgithub.com%2FAstear17%2FVercelDrive&env=NEXT_PUBLIC_SITE_TITLE,USER_PRINCIPAL_NAME,BASE_DIRECTORY,CLIENT_ID,CLIENT_SECRET,NEXT_PUBLIC_PROTECTED_ROUTES&buildCommand=pnpm+build&framework=nextjs&installCommand=pnpm+install)
+
+### Full Setup
+
+Uploads, protected routes, email, KV prefix, and conflict behavior.
+
+[![Deploy with Vercel](https://vercel.com/button)](https://vercel.com/new/git/clone?repository-url=https%3A%2F%2Fgithub.com%2FAstear17%2FVercelDrive&env=NEXT_PUBLIC_SITE_TITLE,USER_PRINCIPAL_NAME,BASE_DIRECTORY,CLIENT_ID,CLIENT_SECRET,UPLOAD_PASSWORD,NEXT_PUBLIC_PROTECTED_ROUTES,KV_PREFIX,NEXT_PUBLIC_EMAIL,UPLOAD_CONFLICT_BEHAVIOR&buildCommand=pnpm+build&framework=nextjs&installCommand=pnpm+install)
 
 ## 5. Connect Redis
 
