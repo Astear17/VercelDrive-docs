@@ -1,0 +1,11 @@
+export default {
+  "protected-folders": "Password protected folders",
+  "password-uploading": "Password uploading",
+  "upload-files-and-folders": "Upload files and folders",
+  "grid-view-full-preview": "Grid view full preview",
+  "multi-file-folder-download": "Multi-file and folder download",
+  "hosting-images-directly": "Hosting images directly",
+  "search-for-files-and-folders": "Search for files and folders",
+  "load-video-subtitles": "Load video subtitles",
+  "customise-direct-link": "Customise direct link"
+}

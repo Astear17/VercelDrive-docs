@@ -1,0 +1,11 @@
+# Bộ nhớ đệm (Cache)
+
+VercelDrive sử dụng Redis (Upstash) để lưu trữ mã thông báo truy cập và bộ nhớ đệm API nhằm giảm thiểu thời gian tải và giảm số lượng yêu cầu đến API của Microsoft Graph.
+
+## Lợi ích của bộ nhớ đệm
+
+- Tăng tốc độ truy xuất thư mục.
+- Giảm tỷ lệ giới hạn API (Rate limit) của Microsoft.
+- Hoạt động liền mạch nhờ tích hợp trực tiếp trên Edge Networks.
+
+Bạn chỉ cần kết nối Upstash Redis với Vercel là mọi thứ sẽ tự động được cấu hình qua biến môi trường `REDIS_URL`.

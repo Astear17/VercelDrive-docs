@@ -1,0 +1,48 @@
+import { Callout } from 'nextra/components'
+
+# Error On Deployment
+
+## ItemNotFound
+
+```json
+{
+  "error": {
+    "error": {
+      "code": "itemNotFound",
+      "message": "The resource could not be found."
+    }
+  }
+}
+```
+
+This usually means `BASE_DIRECTORY` does not point to an existing OneDrive folder.
+
+Check these items:
+
+1. The folder exists in the OneDrive account configured by `USER_PRINCIPAL_NAME`.
+2. `BASE_DIRECTORY` starts with `/`.
+3. The OAuth account is the same account that owns or can access that folder.
+
+## 403 After Deployment
+
+The app cannot find valid OAuth tokens yet, or Redis is unavailable.
+
+Check these items:
+
+1. `REDIS_URL` exists in Vercel production environment variables.
+2. The project was redeployed after `REDIS_URL` was added.
+3. OAuth setup was completed on the deployed site.
+
+## Upload Permission Denied
+
+This happens when the stored OAuth token does not include write permission.
+
+<Callout type="warning">
+  Add `Files.ReadWrite.All`, clear the old Redis/KV tokens, redeploy, and authenticate again.
+</Callout>
+
+## Error 504
+
+504 errors are usually caused by a slow Microsoft Graph response, an invalid Redis connection, or a folder traversal that is too large for a serverless request.
+
+Check `REDIS_URL`, retry the request, and avoid using folder zip download for very large folders.

@@ -1,0 +1,16 @@
+import { Callout } from 'nextra/components'
+import Video from '../../../../components/video'
+
+# Multi-file and folder download
+
+<Callout type="warning">
+  Tải nhiều tệp được tạo ngay trong trình duyệt. Tính năng này phù hợp nhất với nhiều tệp nhỏ. Với tệp rất lớn, tải từng tệp trực tiếp sẽ ổn định hơn.
+</Callout>
+
+<Video src="/videos/multi-file-folder-download.mp4" ratio={1246 / 2246} />
+
+VercelDrive dùng JSZip để tải các tệp đã chọn trong trình duyệt, nén thành một blob `zip`, rồi lưu file nén đó về thiết bị.
+
+Trình tải hiện kiểm tra phản hồi fetch trước khi thêm từng tệp vào file nén và chờ một khoảng ngắn trước khi thu hồi blob URL đã tạo. Điều này tránh lỗi thường gặp khi zip chạy đến một phần trăm nhất định rồi trình duyệt báo tải xuống thất bại.
+
+Thư mục được duyệt đệ quy và đưa vào file zip. Bạn có thể chọn nhiều tệp hoặc nhiều thư mục để tải xuống cùng lúc.

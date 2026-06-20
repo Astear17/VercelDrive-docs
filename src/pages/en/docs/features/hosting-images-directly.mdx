@@ -1,0 +1,15 @@
+# Hosting Images Directly
+
+You can use VercelDrive raw links as direct image URLs.
+
+```md
+![Example image](https://your-drive.example/api/raw/?path=/Images/photo.png)
+```
+
+For services that require a filename at the end of the URL, use the named route:
+
+```md
+![Example image](https://your-drive.example/api/name/photo.png?path=/Images/photo.png)
+```
+
+The OneDrive file must be inside the configured `BASE_DIRECTORY`, and protected files need a valid protected route token.

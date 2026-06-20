@@ -1,0 +1,15 @@
+# Load Video Subtitles
+
+VercelDrive can load subtitles for supported video previews when the subtitle file is stored beside the video.
+
+Recommended layout:
+
+```text
+Videos/
+├── demo.mp4
+└── demo.vtt
+```
+
+Use WebVTT (`.vtt`) where possible. Keep the subtitle filename close to the video filename so it is easy to manage in OneDrive.
+
+Subtitles are loaded in the browser video player and do not modify the original video file.

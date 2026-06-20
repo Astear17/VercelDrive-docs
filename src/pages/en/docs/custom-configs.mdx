@@ -1,0 +1,94 @@
+# Custom Configs
+
+VercelDrive is configured through Vercel environment variables. Older upstream docs mention editing `config/api.config.js` and `config/site.config.js`; for this fork, prefer environment variables so one-click deployment stays portable.
+
+## Site Title
+
+`NEXT_PUBLIC_SITE_TITLE` controls the title shown in the navigation and browser metadata.
+
+```text
+NEXT_PUBLIC_SITE_TITLE=2Drive
+```
+
+This variable is public because it starts with `NEXT_PUBLIC_`.
+
+## Base Directory
+
+`BASE_DIRECTORY` controls which OneDrive folder is exposed by the site.
+
+```text
+BASE_DIRECTORY=/
+BASE_DIRECTORY=/Public Drive
+```
+
+Use `/` for the OneDrive root. Do not prefix this variable with `NEXT_PUBLIC_`.
+
+## Contact Email
+
+`NEXT_PUBLIC_EMAIL` adds a contact email link to the header.
+
+```text
+NEXT_PUBLIC_EMAIL=admin@example.com
+```
+
+Leave it unset if you do not want to show an email link.
+
+## Protected Routes
+
+`NEXT_PUBLIC_PROTECTED_ROUTES` is a comma-separated list of folders that require a `.password` file.
+
+```text
+NEXT_PUBLIC_PROTECTED_ROUTES=/private,/family
+```
+
+See [Password protected folders](./features/protected-folders) for the full setup.
+
+## Redis Key Prefix
+
+`KV_PREFIX` is useful when multiple VercelDrive deployments share one Redis database.
+
+```text
+KV_PREFIX=drive1_
+```
+
+VercelDrive stores OAuth tokens as `<KV_PREFIX>access_token` and `<KV_PREFIX>refresh_token`.
+
+## Upload Options
+
+Read/write deployments need `UPLOAD_PASSWORD`.
+
+```text
+UPLOAD_PASSWORD=strong-private-password
+```
+
+`UPLOAD_CONFLICT_BEHAVIOR` controls duplicate file names during upload.
+
+```text
+UPLOAD_CONFLICT_BEHAVIOR=rename
+```
+
+Supported values are `rename`, `replace`, and `fail`. See [Advanced upload settings](./advanced#upload-conflict-behavior).
+
+## Icons And Favicons
+
+Static icons live in `/public`. Replace these files in your GitHub project when you want to use your own branding:
+
+```text
+public/favicon.ico
+public/favicon-16x16.png
+public/favicon-32x32.png
+public/apple-touch-icon.png
+public/icons/64.png
+public/icons/128.png
+public/icons/256.png
+public/icons/512.png
+```
+
+The docs site header uses `public/icons/64.png` for the VercelDrive logo.
+
+## Useful Resources
+
+- [Getting Started](./getting-started): deployment path and Vercel buttons.
+- [Advanced](./advanced): Microsoft app registration, client secret, and API permissions.
+- [Cache](./cache): Redis token storage and cache behavior.
+- [Upload files and folders](./features/upload-files-and-folders): upload behavior and requirements.

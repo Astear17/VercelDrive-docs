@@ -1,0 +1,10 @@
+export default {
+  "getting-started": "Getting started",
+  "custom-configs": "Custom configs",
+  cache: "Cache",
+  advanced: "Advanced",
+  features: "Features",
+  showcase: "Showcase",
+  migration: "Migration",
+  faqs: "FAQs"
+}

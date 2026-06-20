@@ -1,0 +1,17 @@
+import { Callout } from 'nextra/components'
+import Video from '../../../../components/video'
+
+# Multi-file and folder download
+
+<Callout type="warning">
+  Multi-file downloads are generated in the browser. They work best for many small files. For very large files, direct
+  single-file downloads are more reliable.
+</Callout>
+
+<Video src="/videos/multi-file-folder-download.mp4" ratio={1246 / 2246} />
+
+VercelDrive uses JSZip to fetch the selected files in the browser, compress them into a `zip` blob, and save that archive to your device.
+
+The current downloader validates fetch responses before adding each file to the archive and waits briefly before revoking the generated blob URL. This avoids the common failure where a zip appears to reach a certain percentage and then the browser reports a failed download.
+
+Folders are traversed and recursively fetched into the compressed zip. Multiple files or folders can be selected and downloaded side-by-side.

@@ -1,0 +1,48 @@
+import { Callout } from 'nextra/components'
+
+# Lỗi khi triển khai
+
+## ItemNotFound
+
+```json
+{
+  "error": {
+    "error": {
+      "code": "itemNotFound",
+      "message": "The resource could not be found."
+    }
+  }
+}
+```
+
+Lỗi này thường có nghĩa là `BASE_DIRECTORY` không trỏ đến một thư mục OneDrive hợp lệ.
+
+Hãy kiểm tra:
+
+1. Thư mục tồn tại trong tài khoản OneDrive được đặt bằng `USER_PRINCIPAL_NAME`.
+2. `BASE_DIRECTORY` bắt đầu bằng `/`.
+3. Tài khoản OAuth là tài khoản sở hữu hoặc có quyền truy cập thư mục đó.
+
+## 403 sau khi triển khai
+
+Ứng dụng chưa có OAuth token hợp lệ hoặc Redis chưa hoạt động.
+
+Hãy kiểm tra:
+
+1. `REDIS_URL` đã có trong biến môi trường production của Vercel.
+2. Dự án đã redeploy sau khi thêm `REDIS_URL`.
+3. OAuth setup đã hoàn tất trên trang đã triển khai.
+
+## Upload bị từ chối quyền
+
+Lỗi này xảy ra khi token OAuth đang lưu chưa có quyền ghi.
+
+<Callout type="warning">
+  Thêm `Files.ReadWrite.All`, xóa token cũ trong Redis/KV, redeploy và xác thực lại.
+</Callout>
+
+## Error 504
+
+504 thường do Microsoft Graph phản hồi chậm, Redis URL không hợp lệ hoặc tải zip thư mục quá lớn cho serverless request.
+
+Kiểm tra `REDIS_URL`, thử lại request và tránh dùng folder zip download cho thư mục rất lớn.

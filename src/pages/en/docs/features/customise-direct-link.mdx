@@ -1,0 +1,19 @@
+# Customise Direct Link
+
+Some embed targets require a URL that ends with a filename and extension. VercelDrive supports a named raw route for that case.
+
+Original raw link:
+
+```text
+https://your-drive.example/api/raw/?path=/Videos/demo.mp4
+```
+
+Named direct link:
+
+```text
+https://your-drive.example/api/name/demo.mp4?path=/Videos/demo.mp4
+```
+
+The `name` path segment only changes the visible filename at the end of the URL. The real OneDrive path still comes from the `path` query parameter.
+
+Use this for embeds in services that detect file type from the URL extension.

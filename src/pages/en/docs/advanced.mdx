@@ -1,0 +1,138 @@
+import { Callout } from 'nextra/components'
+import Encryption from '../../../components/encryption'
+
+# Advanced
+
+Use this page when you need to create your own Microsoft Entra app, change API permissions, enable uploads, or understand which environment variables replace the old config files.
+
+## Microsoft Entra App Registration
+
+Open [Microsoft Azure App registrations](https://portal.azure.com/#blade/Microsoft_AAD_RegisteredApps/ApplicationsListBlade), sign in with the Microsoft account or tenant that owns the OneDrive, and create a new registration.
+
+Recommended registration values:
+
+1. Name: `VercelDrive`, or any name that helps you recognize the app.
+2. Supported account types: accounts in any organizational directory and personal Microsoft accounts.
+3. Redirect URI: `Web` and `http://localhost`.
+
+After registration, copy the Application (client) ID. This is your `CLIENT_ID`.
+
+![Application client ID](./_images/advanced/get-client-id.png)
+
+## Client Secret
+
+Open **Certificates & secrets**, create a new client secret, and copy the secret value immediately. Microsoft only shows the value once.
+
+![Create a client secret](./_images/advanced/create-client-secret.png)
+
+![Copy the client secret](./_images/advanced/copy-your-client-secret.png)
+
+VercelDrive expects the client secret to be AES-obfuscated before it is stored as `CLIENT_SECRET`.
+
+<Encryption />
+
+The result should look similar to this:
+
+```text
+U2FsdGVkX1830zo3/pFDqaBCVBb37iLw3WnBDWGF9GIB2f4apzv0roemp8Y+iIxI3Ih5ecyukqELQEGzZlYiWg==
+```
+
+## API Permissions
+
+Open **API permissions**, select **Microsoft Graph**, select **Delegated permissions**, and add the scopes that match your setup mode.
+
+### Read-only mode
+
+Use read-only mode when the site should only browse, preview, share, and download files.
+
+Required delegated permissions:
+
+- `User.Read`
+- `Files.Read.All`
+- `offline_access`
+
+Do not set `UPLOAD_PASSWORD` in Vercel for this mode.
+
+### Read/write upload mode
+
+Use read/write mode when browser uploads and folder creation should be available.
+
+Required delegated permissions:
+
+- `User.Read`
+- `Files.ReadWrite.All`
+- `offline_access`
+
+Set `UPLOAD_PASSWORD` in Vercel. You can also set `UPLOAD_CONFLICT_BEHAVIOR` to `rename`, `replace`, or `fail`.
+
+![Modify Microsoft Graph API permissions](./_images/advanced/add-required-permissions.png)
+
+<Callout type="warning">
+  Changing permissions does not update already stored OAuth tokens. Clear `<KV_PREFIX>access_token` and `<KV_PREFIX>refresh_token` from Redis/KV, then authenticate again.
+</Callout>
+
+## Environment Variables And Resources
+
+These variables replace the old `config/api.config.js` and `config/site.config.js` setup.
+
+| Variable | Required | Resource |
+| --- | --- | --- |
+| `NEXT_PUBLIC_SITE_TITLE` | Yes | See [Custom configs](./custom-configs#site-title). |
+| `USER_PRINCIPAL_NAME` | Yes | The OneDrive account email. See [Getting Started](./getting-started#3-prepare-environment-variables). |
+| `BASE_DIRECTORY` | Yes | See [Custom configs](./custom-configs#base-directory). |
+| `CLIENT_ID` | Yes | From the Microsoft Entra App Registration overview. |
+| `CLIENT_SECRET` | Yes | AES-obfuscated with the tool above. |
+| `REDIS_URL` | Yes | See [Cache](./cache) for Redis and token storage. |
+| `UPLOAD_PASSWORD` | Upload mode only | See [Password upload gate](#password-upload-gate). |
+| `NEXT_PUBLIC_PROTECTED_ROUTES` | Optional | See [Password protected folders](./features/protected-folders). |
+| `KV_PREFIX` | Optional | Use when several deployments share one Redis database. |
+| `NEXT_PUBLIC_EMAIL` | Optional | See [Custom configs](./custom-configs#contact-email). |
+| `UPLOAD_CONFLICT_BEHAVIOR` | Optional | See [Upload conflict behavior](#upload-conflict-behavior). |
+
+Only variables intentionally used in the browser should start with `NEXT_PUBLIC_`.
+
+## Password Upload Gate
+
+Uploads are protected by `UPLOAD_PASSWORD`. The browser submits the password to `/api/upload/auth`, and the server sets a short-lived, HTTP-only upload authorization cookie. Upload APIs still verify that authorization server-side on every request.
+
+Important behavior:
+
+- Leaving `UPLOAD_PASSWORD` empty disables uploads.
+- The password is never a `NEXT_PUBLIC_` variable.
+- The UI password prompt is not the security boundary; the API route checks are.
+- The upload session can be cleared by signing out, waiting for the cookie to expire, or clearing site cookies.
+
+## Upload Conflict Behavior
+
+`UPLOAD_CONFLICT_BEHAVIOR` controls what happens when an uploaded file has the same name as an existing OneDrive file.
+
+Supported values:
+
+- `rename`: keep both files and let OneDrive rename the new file.
+- `replace`: overwrite the existing file.
+- `fail`: reject the upload when a file already exists.
+
+If the variable is missing or invalid, VercelDrive uses `rename`.
+
+## Token Reset For Permission Changes
+
+When you change Microsoft Graph permissions, clear the stored tokens before authenticating again.
+
+Redis keys:
+
+```text
+<KV_PREFIX>access_token
+<KV_PREFIX>refresh_token
+```
+
+If `KV_PREFIX` is empty, the keys are simply `access_token` and `refresh_token`.
+
+An upload-authorized admin can also call:
+
+```http
+POST /api/upload/reset-auth-tokens
+```
+
+## Custom Domain
+
+Custom domains are configured in Vercel under **Project Settings > Domains**. See [Vercel custom domain documentation](https://vercel.com/docs/projects/domains).

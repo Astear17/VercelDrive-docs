@@ -1,0 +1,55 @@
+import Video from '../../../../components/video'
+
+# Thư mục bảo vệ bằng mật khẩu
+
+<Video src="/videos/password-demo.mp4" ratio={1246 / 2246} />
+
+## Bảo vệ một thư mục hoặc route
+
+Bạn có thể bảo vệ một thư mục bằng mật khẩu.
+
+### Cách thiết lập
+
+- Đặt đường dẫn thư mục cần bảo vệ trong biến môi trường `NEXT_PUBLIC_PROTECTED_ROUTES`, phân tách nhiều thư mục bằng dấu phẩy.
+- Tạo **file văn bản thuần** có tên chính xác là `.password`, rồi đặt file này trong thư mục cần bảo vệ.
+- Mở `.password` bằng VS Code, Notepad hoặc trình soạn thảo văn bản và lưu mật khẩu dưới dạng văn bản thuần.
+- Redeploy VercelDrive trên Vercel để cấu hình mới có hiệu lực.
+
+### Chi tiết
+
+Ví dụ bạn có cấu trúc thư mục sau:
+
+```text
+.
+├── Books
+│   └── ...
+├── Private folder
+│   ├── this-is-public
+│   └── u-need-a-password   <-- thư mục cần bảo vệ
+├── Media
+│   └── ...
+└── README.md
+```
+
+Nếu muốn bảo vệ thư mục `u-need-a-password`, hãy đặt `NEXT_PUBLIC_PROTECTED_ROUTES` thành đường dẫn tuyệt đối tính từ root OneDrive:
+
+```text
+/Private folder/u-need-a-password
+```
+
+Nếu có nhiều thư mục, phân tách bằng dấu phẩy:
+
+```text
+/Private folder/u-need-a-password,/another/protected-folder
+```
+
+Không cần mã hóa nội dung trong `.password`. Chuỗi bạn lưu trong file đó chính là mật khẩu để truy cập thư mục.
+
+![What to write inside .password](../_images/features/dot-password-file.png)
+
+### Lưu ý
+
+Tính năng này phù hợp cho chia sẻ riêng tư cơ bản, nhưng không nên xem là lớp bảo vệ tuyệt đối cho dữ liệu nhạy cảm.
+
+1. Liên kết trực tiếp của tệp trong thư mục được bảo vệ có thể kèm tham số `&odpt=<hashed_token>`.
+2. Không nên đặt dữ liệu nhạy cảm cao trong thư mục công khai chỉ dựa vào `.password`.

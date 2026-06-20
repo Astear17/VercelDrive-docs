@@ -1,4 +1,4 @@
-import { useRouter } from 'next/router'
+import { useRouter } from 'nextra/hooks'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faCloudArrowUp, faGaugeHigh, faPalette, faServer } from '@fortawesome/free-solid-svg-icons'
 
@@ -18,7 +18,9 @@ const featureTranslations = {
 }
 
 export default function Features() {
-  const { locale, defaultLocale } = useRouter()
+  const { locale: rawLocale, defaultLocale: rawDefaultLocale } = useRouter()
+  const locale = rawLocale || 'en'
+  const defaultLocale = rawDefaultLocale || 'en'
   const icons = {
     'free-to-host': faServer,
     'setup-time': faCloudArrowUp,

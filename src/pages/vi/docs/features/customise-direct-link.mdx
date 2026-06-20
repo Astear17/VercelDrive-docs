@@ -1,0 +1,19 @@
+# Tùy chỉnh liên kết trực tiếp
+
+Một số dịch vụ nhúng yêu cầu URL kết thúc bằng tên tệp và phần mở rộng. VercelDrive hỗ trợ route raw có tên cho trường hợp này.
+
+Liên kết raw gốc:
+
+```text
+https://your-drive.example/api/raw/?path=/Videos/demo.mp4
+```
+
+Liên kết trực tiếp có tên:
+
+```text
+https://your-drive.example/api/name/demo.mp4?path=/Videos/demo.mp4
+```
+
+Đoạn `name` chỉ thay đổi tên tệp hiển thị ở cuối URL. Đường dẫn OneDrive thật vẫn lấy từ query `path`.
+
+Dùng cách này cho các dịch vụ nhúng nhận diện loại tệp bằng phần mở rộng trong URL.

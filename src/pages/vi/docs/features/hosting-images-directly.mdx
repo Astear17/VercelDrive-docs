@@ -1,0 +1,15 @@
+# Host ảnh trực tiếp
+
+Bạn có thể dùng raw link của VercelDrive làm URL ảnh trực tiếp.
+
+```md
+![Example image](https://your-drive.example/api/raw/?path=/Images/photo.png)
+```
+
+Với dịch vụ yêu cầu URL kết thúc bằng tên file, dùng named route:
+
+```md
+![Example image](https://your-drive.example/api/name/photo.png?path=/Images/photo.png)
+```
+
+Tệp OneDrive phải nằm trong `BASE_DIRECTORY` đã cấu hình, và tệp trong thư mục bảo vệ cần token hợp lệ.
