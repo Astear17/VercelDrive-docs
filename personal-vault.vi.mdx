@@ -1,0 +1,31 @@
+# Kho lưu trữ cá nhân
+
+VercelDrive không hiển thị Kho lưu trữ cá nhân (Personal Vault) của OneDrive.
+
+Kho lưu trữ cá nhân là khu vực được bảo vệ trong OneDrive, yêu cầu xác minh danh tính qua phía Microsoft trước khi có thể mở tệp. Vì quy trình xác minh này do OneDrive xử lý, VercelDrive không cố gắng mở khóa, trung gian hay hiển thị nội dung Kho lưu trữ cá nhân.
+
+## Cách hoạt động
+
+Khi VercelDrive liệt kê tệp trong một thư mục, nó tự động bỏ qua mọi mục được xác định là Kho lưu trữ cá nhân. Điều này áp dụng cho:
+
+- Danh sách thư mục (bao gồm thư mục gốc)
+- Kết quả tìm kiếm
+- Truy cập trực tiếp vào đường dẫn Kho lưu trữ cá nhân
+
+Nếu bạn truy cập đường dẫn Kho lưu trữ cá nhân theo cách thủ công, VercelDrive sẽ trả về lỗi 404.
+
+## Truy cập tệp trong Kho lưu trữ cá nhân
+
+Nếu bạn cần truy cập tệp được lưu trong Kho lưu trữ cá nhân, hãy mở chúng từ:
+
+- [OneDrive trên web](https://onedrive.live.com)
+- OneDrive trong Windows File Explorer
+- Ứng dụng OneDrive trên điện thoại
+
+Để đưa tệp từ Kho lưu trữ cá nhân sang VercelDrive, hãy di chuyển hoặc sao chép tệp đó vào thư mục OneDrive thông thường trước. Sau đó bạn có thể sử dụng tính năng [bảo vệ bằng mật khẩu](/docs/protected-folders) của VercelDrive nếu muốn hạn chế truy cập.
+
+## Lý do có giới hạn này
+
+Kho lưu trữ cá nhân sử dụng cơ chế xác minh danh tính của Microsoft (ví dụ: xác thực hai yếu tố, sinh trắc học hoặc mã PIN). VercelDrive không thể thực hiện xác minh này thay người dùng, và việc cố gắng vượt qua sẽ làm yếu đi lớp bảo vệ mà Kho lưu trữ cá nhân được thiết kế để cung cấp.
+
+Đây là hành vi có chủ đích. Nó giữ Kho lưu trữ cá nhân tách biệt khỏi việc duyệt tệp công khai hoặc tự lưu trữ.

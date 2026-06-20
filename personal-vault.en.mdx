@@ -1,0 +1,31 @@
+# Personal Vault
+
+VercelDrive does not display OneDrive Personal Vault.
+
+Personal Vault is a protected area in OneDrive that requires Microsoft-side identity verification before files can be opened. Because that verification is handled by OneDrive itself, VercelDrive does not try to unlock, proxy, or expose Personal Vault content.
+
+## How it works
+
+When VercelDrive lists files in a folder, it automatically skips any item identified as Personal Vault. This applies to:
+
+- Folder listings (including the root directory)
+- Search results
+- Direct URL access to a Personal Vault path
+
+If you navigate to a Personal Vault path manually, VercelDrive returns a 404 response.
+
+## Accessing Personal Vault files
+
+If you need to access files stored in Personal Vault, open them from:
+
+- [OneDrive on the web](https://onedrive.live.com)
+- OneDrive in Windows File Explorer
+- The OneDrive mobile app
+
+To make a Personal Vault file available through VercelDrive, move or copy it to a regular OneDrive folder first. You can then use VercelDrive's own [password protection](/docs/protected-folders) if you want to restrict access.
+
+## Why this limitation exists
+
+Personal Vault uses Microsoft's own identity verification (e.g. two-factor authentication, biometrics, or a PIN). VercelDrive has no way to perform that verification on behalf of a user, and attempting to bypass it would weaken the protection that Personal Vault is designed to provide.
+
+This behavior is intentional. It keeps Personal Vault separate from public or self-hosted file browsing.
