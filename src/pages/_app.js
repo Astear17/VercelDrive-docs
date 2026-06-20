@@ -1,3 +1,4 @@
+import '../../style.css'
 import '../style.css'
 import 'nextra-theme-docs/style.css'
 import Script from 'next/script'
