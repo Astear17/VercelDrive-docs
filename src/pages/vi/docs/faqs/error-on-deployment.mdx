@@ -46,3 +46,52 @@ Lỗi này xảy ra khi token OAuth đang lưu chưa có quyền ghi.
 504 thường do Microsoft Graph phản hồi chậm, Redis URL không hợp lệ hoặc tải zip thư mục quá lớn cho serverless request.
 
 Kiểm tra `REDIS_URL`, thử lại request và tránh dùng folder zip download cho thư mục rất lớn.
+
+## Lỗi fetch API
+
+**Thông báo lỗi**:
+
+```text
+Failed to refresh Microsoft Graph API access token. Reset OAuth tokens and authenticate again
+```
+
+Lỗi này xảy ra khi token access hoặc refresh token Microsoft Graph đang lưu không hợp lệ. Nguyên nhân phổ biến:
+
+- Access token hết hạn và quá trình làm mới thất bại
+- Mật khẩu tài khoản Microsoft đã được thay đổi
+- Quyền truy cập VercelDrive đã bị thu hồi trong tài khoản Microsoft
+- Azure App Registration đã bị xóa, thay đổi hoặc hỏng
+- Token lưu trong Upstash đã cũ
+
+### Khắc phục
+
+**Bước 1**: Kiểm tra Microsoft Entra App Registration.
+
+Mở [Azure Portal — App registrations](https://portal.azure.com/#blade/Microsoft_AAD_RegisteredApps/ApplicationsListBlade) và xác minh ứng dụng VercelDrive sử dụng vẫn tồn tại và được cấu hình đúng. Nếu app registration đã bị xóa hoặc cấu hình thay đổi, hãy tạo lại và cập nhật biến môi trường Vercel:
+
+- `CLIENT_ID`
+- `CLIENT_SECRET`
+
+Xem [Nâng cao — Đăng ký ứng dụng Microsoft Entra](../advanced#dang-ky-ung-dung-microsoft-entra) để biết chi tiết.
+
+**Bước 2**: Xóa token đã lưu trong Upstash.
+
+1. Mở Upstash Console: [console.upstash.com](https://console.upstash.com)
+2. Chọn database Redis kết nối với dự án VercelDrive.
+3. Mở **Data Browser**.
+4. Tìm và xóa các khóa sau:
+   - `access_token`
+   - `refresh_token`
+   - Nếu bạn dùng `KV_PREFIX`, xóa `<KV_PREFIX>access_token` và `<KV_PREFIX>refresh_token` thay thế.
+5. Dùng menu `...` bên cạnh mỗi khóa và chọn **Delete Key**.
+
+**Bước 3**: Redeploy.
+
+1. Mở dashboard dự án Vercel.
+2. Trong thanh bên, mở **Deployments**.
+3. Tìm deployment **Ready** mới nhất.
+4. Di chuột qua menu `...` bên phải và chọn **Redeploy**.
+
+**Bước 4**: Xác thực lại.
+
+Sau khi redeploy, mở trang. VercelDrive sẽ hiển thị trình hướng dẫn OAuth. Hoàn tất luồng xác thực 3 bước để lưu token mới.

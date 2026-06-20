@@ -15,7 +15,10 @@ export default {
       <meta name="theme-color" content="#0d1117" />
       <meta name="viewport" content="width=device-width, initial-scale=1.0" />
       <meta httpEquiv="Content-Language" content="en" />
-      <meta name="description" content="VercelDrive — OneDrive directory app powered by Vercel and Next.js" />
+      <meta name="description" content="VercelDrive documentation — deploy, configure, and use a self-hosted OneDrive file browser on Vercel." />
+      <meta property="og:title" content="VercelDrive Docs" />
+      <meta property="og:description" content="Deploy, configure, and use a self-hosted OneDrive file browser on Vercel." />
+      <meta property="og:url" content="https://2drv-docs.vercel.app" />
       <meta name="apple-mobile-web-app-title" content="VercelDrive" />
       <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png" />
       <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png" />

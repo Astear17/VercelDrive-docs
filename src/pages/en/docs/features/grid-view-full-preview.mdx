@@ -1,4 +1,4 @@
-# Grid View Full Preview
+# Grid View
 
 Grid view shows image and video thumbnails directly in folder listings, so media-heavy folders can be scanned before opening each file.
 
@@ -9,8 +9,14 @@ Grid view shows image and video thumbnails directly in folder listings, so media
 - File icons for unsupported or non-media formats
 - Full file preview after opening an item
 
+## Layout
+
+The gallery uses a masonry (waterfall) layout that packs items into columns based on their natural aspect ratio. Tall images stay tall, wide images stay wide, and shorter items fill the gaps below taller ones. This avoids the large empty spaces that a fixed-row grid would create when images have different proportions.
+
 ## Best Use
 
 Use grid view for photo folders, video folders, and mixed media libraries. Use list view when filenames, timestamps, and dense scanning are more important than visual preview.
 
 The preview page still opens the full image or video viewer when a file is selected.
+
+![Grid view with masonry layout](../_images/showcase/grid-view-demo.png)

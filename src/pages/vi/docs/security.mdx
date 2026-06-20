@@ -1,0 +1,117 @@
+import { Callout } from 'nextra/components'
+
+# Bảo mật
+
+Trang này giải thích cách VercelDrive xử lý xác thực, phân quyền và quản lý secret.
+
+## Người truy cập có thể làm gì
+
+Theo mặc định, bất kỳ ai truy cập trang đã triển khai đều có thể duyệt, xem trước, tìm kiếm và tải xuống tệp từ `BASE_DIRECTORY` đã cấu hình. Không cần xác thực cho quyền truy cập chỉ đọc.
+
+Nếu `UPLOAD_PASSWORD` được đặt, người truy cập phải nhập mật khẩu trước khi tải lên hoặc xóa tệp. Mật khẩu được xác minh phía máy chủ cho mọi request thay đổi dữ liệu.
+
+## Phạm vi chỉ đọc vs đọc/ghi
+
+| Chế độ | Quyền Microsoft Graph | Người truy cập có thể làm gì |
+| --- | --- | --- |
+| Chỉ đọc | `User.Read`, `Files.Read.All`, `offline_access` | Duyệt, xem trước, tìm kiếm, tải xuống |
+| Đọc/ghi | `User.Read`, `Files.ReadWrite.All`, `offline_access` | Tất cả thao tác chỉ đọc cộng tải lên và xóa |
+
+Phạm vi Microsoft Graph được đặt khi đăng ký Azure App. Thay đổi phạm vi sau khi triển khai yêu cầu xóa token OAuth đã lưu và xác thực lại. Xem [Đặt lại token](#dat-lai-token).
+
+## Bảo mật biến môi trường
+
+### Chỉ phía máy chủ (không bao giờ hiển thị cho trình duyệt)
+
+Các biến này **không bao giờ** được dùng tiền tố `NEXT_PUBLIC_`:
+
+- `CLIENT_SECRET` — client secret của Microsoft Entra
+- `REDIS_URL` — chuỗi kết nối Redis
+- `UPLOAD_PASSWORD` — mật khẩu xác thực tải lên/xóa
+- `USER_PRINCIPAL_NAME` — email tài khoản OneDrive
+- `BASE_DIRECTORY` — thư mục gốc OneDrive
+- `CLIENT_ID` — client ID của Azure app
+
+Biến có tiền tố `NEXT_PUBLIC_` được nhúng vào JavaScript bundle phía client và ai mở devtools đều thấy.
+
+### Công khai có chủ đích
+
+- `NEXT_PUBLIC_SITE_TITLE` — tiêu đề trang
+- `NEXT_PUBLIC_PROTECTED_ROUTES` — đường dẫn thư mục bảo vệ (không phải secret; mật khẩu trong file `.password` mới là secret)
+- `NEXT_PUBLIC_EMAIL` — email liên hệ
+
+## Mật khẩu tải lên
+
+Khi `UPLOAD_PASSWORD` được đặt:
+
+1. Người dùng nhập mật khẩu trong trình duyệt.
+2. Trình duyệt gửi mật khẩu đến `/api/upload/auth`.
+3. Máy chủ so sánh mật khẩu bằng so sánh thời gian không đổi (`crypto.timingSafeEqual`).
+4. Khi thành công, máy chủ đặt cookie HMAC-signed, HttpOnly, Secure (`vd_upload_auth`) với thời hạn 30 phút.
+5. Tất cả API tải lên và xóa xác minh cookie này phía máy chủ trước khi xử lý.
+
+Mật khẩu không bao giờ được lưu trong trình duyệt, không bao giờ gửi dưới dạng query parameter và không bao giờ hiển thị trong JavaScript phía client.
+
+<Callout>
+Prompt nhập mật khẩu trong UI không phải ranh giới bảo mật. Kiểm tra ở API route mới là ranh giới thật. Ngay cả khi ai đó vượt qua UI, họ vẫn cần cookie hợp lệ phía máy chủ.
+</Callout>
+
+## Thư mục bảo vệ vs mật khẩu tải lên
+
+Đây là hai hệ thống riêng biệt:
+
+| Tính năng | Thư mục bảo vệ | Mật khẩu tải lên |
+| --- | --- | --- |
+| Mục đích | Hạn chế truy cập vào thư mục cụ thể | Kiểm soát thao tác tải lên và xóa toàn trang |
+| Cấu hình | `NEXT_PUBLIC_PROTECTED_ROUTES` + file `.password` | Biến môi trường `UPLOAD_PASSWORD` |
+| Lưu mật khẩu | File `.password` dạng văn bản thuần trong OneDrive | Biến môi trường phía máy chủ |
+| Cơ chế xác thực | So sánh hash SHA-256 | Cookie HMAC-signed |
+| Phạm vi | Theo thư mục | Toàn trang |
+
+Thư mục bảo vệ **không** ngăn việc liệt kê tệp — tên tệp vẫn hiển thị trong kết quả tìm kiếm. Chỉ nội dung tệp bị hạn chế truy cập.
+
+## Lưu trữ OAuth token
+
+VercelDrive lưu token OAuth Microsoft Graph trong Redis (Upstash):
+
+- `access_token` — thời hạn ngắn, tự động làm mới
+- `refresh_token` — thời hạn dài, dùng để lấy access_token mới
+
+Token được lưu với tiền tố khóa được cấu hình trong `KV_PREFIX` (mặc định trống).
+
+## Đặt lại token
+
+Xóa token đã lưu khi:
+
+- Bạn thay đổi quyền Microsoft Graph (ví dụ từ `Files.Read.All` thành `Files.ReadWrite.All`)
+- Refresh token bị thu hồi hoặc hết hạn
+- Bạn thấy lỗi "Failed to refresh Microsoft Graph access token"
+
+### Cách đặt lại
+
+**Cách 1: Upstash Console**
+
+1. Mở [console.upstash.com](https://console.upstash.com)
+2. Chọn database Redis
+3. Mở Data Browser
+4. Xóa `access_token` và `refresh_token` (bao gồm `KV_PREFIX` nếu có)
+
+**Cách 2: Gọi API**
+
+Nếu bạn có cookie upload auth hợp lệ:
+
+```http
+POST /api/upload/reset-auth-tokens
+```
+
+Sau khi xóa token, redeploy và hoàn tất lại luồng OAuth.
+
+## Giới hạn tốc độ
+
+Xác thực tải lên và endpoint xóa bị giới hạn tốc độ theo IP:
+
+- Tăng dần thời gian trễ sau mỗi lần thử sai (250ms mỗi lần, tối đa 2 giây)
+- HTTP 429 sau 10 lần thử sai trong 5 phút
+- Khóa 15 phút sau khi đạt giới hạn
+
+Giới hạn tốc độ được lưu trong bộ nhớ theo instance serverless. Giới hạn reset khi cold start.

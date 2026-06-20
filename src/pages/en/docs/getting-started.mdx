@@ -4,6 +4,20 @@ import { Callout } from 'nextra/components'
 
 This guide deploys your own VercelDrive instance on Vercel. Choose the permission model first, then create the Microsoft app, deploy the project, connect Redis, and complete OAuth. For deeper setup details, keep [Advanced](./advanced), [Custom configs](./custom-configs), and [Cache](./cache) open while you work.
 
+## Prerequisites
+
+Before you start, make sure you have:
+
+- A **Microsoft account** with OneDrive access
+- Access to **Microsoft Azure / Entra** to create an App Registration (or ask your IT admin)
+- A **Vercel account** (free tier works)
+- An **Upstash Redis database** (free tier works; created through Vercel Integration)
+- About **15–20 minutes** for the full setup
+
+No local development tools are needed. Everything is configured through web dashboards and environment variables.
+
+If you want to run VercelDrive locally for development, you also need Node.js 18+ and a package manager (pnpm recommended).
+
 ## 1. Choose Access Mode
 
 | Mode | Use this when | Microsoft Graph delegated permissions | Upload variables |
@@ -14,6 +28,32 @@ This guide deploys your own VercelDrive instance on Vercel. Choose the permissio
 <Callout type="warning">
   If you upgrade an existing read-only deployment to read/write, clear the old Redis/KV OAuth tokens and authenticate again. Existing tokens keep their old Microsoft Graph scope until replaced.
 </Callout>
+
+### Read-only mode
+
+**What you get**: Browse, preview, search, share, and download files. No upload or delete capability.
+
+**Required Graph permissions**: `User.Read`, `Files.Read.All`, `offline_access`
+
+**Environment variables**: Do not set `UPLOAD_PASSWORD`. Upload endpoints are disabled.
+
+### Read/write mode
+
+**What you get**: Everything from read-only, plus browser-based file and folder uploads, and file deletion.
+
+**Required Graph permissions**: `User.Read`, `Files.ReadWrite.All`, `offline_access`
+
+**Environment variables**: Set `UPLOAD_PASSWORD`. Optionally set `UPLOAD_CONFLICT_BEHAVIOR` (`rename`, `replace`, or `fail`).
+
+**Security**: Upload and delete actions require the `UPLOAD_PASSWORD` on every request. The password is verified server-side.
+
+### Protected folders (optional, any mode)
+
+**What you get**: Password-protect specific folders. Visitors must enter the folder password before accessing file contents.
+
+**Configuration**: Set `NEXT_PUBLIC_PROTECTED_ROUTES` (comma-separated paths). Place a `.password` file inside each protected folder in OneDrive.
+
+**Note**: Protected folders do not hide file names from listings or search. Only file content access is restricted.
 
 ## 2. Create A Microsoft Entra App
 

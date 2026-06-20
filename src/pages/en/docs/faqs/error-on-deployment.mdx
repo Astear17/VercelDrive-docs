@@ -46,3 +46,52 @@ This happens when the stored OAuth token does not include write permission.
 504 errors are usually caused by a slow Microsoft Graph response, an invalid Redis connection, or a folder traversal that is too large for a serverless request.
 
 Check `REDIS_URL`, retry the request, and avoid using folder zip download for very large folders.
+
+## API fetch error
+
+**Error message**:
+
+```text
+Failed to refresh Microsoft Graph API access token. Reset OAuth tokens and authenticate again
+```
+
+This happens when the stored Microsoft Graph access token or refresh token is invalid. Common causes:
+
+- Access token expired and the refresh attempt failed
+- Microsoft account password was changed
+- Authorization for VercelDrive was revoked in the Microsoft account
+- Azure App Registration was deleted, changed, or broken
+- Stored tokens in Upstash are stale
+
+### Fix
+
+**Step 1**: Check your Microsoft Entra App Registration.
+
+Open [Azure Portal — App registrations](https://portal.azure.com/#blade/Microsoft_AAD_RegisteredApps/ApplicationsListBlade) and verify the app used by VercelDrive still exists and is correctly configured. If the app registration was deleted or its configuration changed, recreate it and update the Vercel environment variables:
+
+- `CLIENT_ID`
+- `CLIENT_SECRET`
+
+See [Advanced — Microsoft Entra App Registration](../advanced#microsoft-entra-app-registration) for setup details.
+
+**Step 2**: Clear stored tokens in Upstash.
+
+1. Open the Upstash Console: [console.upstash.com](https://console.upstash.com)
+2. Select the Redis database connected to your VercelDrive project.
+3. Open **Data Browser**.
+4. Find and delete these keys:
+   - `access_token`
+   - `refresh_token`
+   - If you use `KV_PREFIX`, delete `<KV_PREFIX>access_token` and `<KV_PREFIX>refresh_token` instead.
+5. Use the `...` menu next to each key and choose **Delete Key**.
+
+**Step 3**: Redeploy.
+
+1. Open your Vercel project dashboard.
+2. In the sidebar, open **Deployments**.
+3. Find the latest **Ready** deployment.
+4. Hover the `...` menu on the right and choose **Redeploy**.
+
+**Step 4**: Authenticate again.
+
+After redeployment, open your site. VercelDrive will show the OAuth setup wizard. Complete the 3-step authentication flow to store fresh tokens.

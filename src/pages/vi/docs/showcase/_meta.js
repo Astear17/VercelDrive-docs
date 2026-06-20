@@ -1,4 +1,4 @@
 export default {
   "file-preview": "Xem trước tệp",
-  pagination: "Phân trang"
+  pagination: "Tự động tải thêm"
 }

@@ -1,0 +1,68 @@
+import { Callout } from 'nextra/components'
+
+# Troubleshooting
+
+Common issues and how to fix them.
+
+## OAuth redirect URI mismatch
+
+**Symptom**: After signing in with Microsoft, you see an error about redirect URI mismatch.
+
+**Fix**: In your Azure App Registration, set the redirect URI to `http://localhost` (exactly). VercelDrive uses this value during the OAuth flow.
+
+## Missing or incorrect REDIS_URL
+
+**Symptom**: The site shows 403 after deployment, or OAuth tokens are not saved.
+
+**Fix**:
+
+1. Connect an Upstash Redis database in Vercel Storage.
+2. Confirm `REDIS_URL` is set in production environment variables.
+3. Redeploy after adding the variable.
+
+## Upload permission denied
+
+**Symptom**: Upload fails with "Microsoft Graph denied upload access."
+
+**Fix**:
+
+1. Add `Files.ReadWrite.All` delegated permission in Azure.
+2. Grant admin consent if required.
+3. Clear stored tokens from Redis (`access_token` and `refresh_token`).
+4. Redeploy and authenticate again.
+
+See [Token reset](../security#token-reset) for detailed instructions.
+
+## Stale OAuth tokens after changing permissions
+
+**Symptom**: The site behaves as read-only even after adding `Files.ReadWrite.All`.
+
+**Fix**: Changing permissions does not update stored tokens. Clear the old tokens and re-authenticate. See [Security — Token reset](../security#token-reset).
+
+## Wrong BASE_DIRECTORY
+
+**Symptom**: "itemNotFound" or "The resource could not be found."
+
+**Fix**: Confirm the folder exists in the OneDrive account, starts with `/`, and the OAuth account has access to it. See [Error on deployment](./error-on-deployment).
+
+## OneDrive folder path not found
+
+**Symptom**: 404 when browsing a specific folder.
+
+**Fix**: OneDrive paths are case-insensitive but must match the actual folder structure. Check for typos, extra spaces, and encoding issues in `BASE_DIRECTORY`.
+
+## Accidental NEXT_PUBLIC_ exposure
+
+**Symptom**: A secret variable is visible in browser devtools.
+
+**Fix**: Remove the `NEXT_PUBLIC_` prefix from any variable that contains a secret. Only `NEXT_PUBLIC_SITE_TITLE`, `NEXT_PUBLIC_PROTECTED_ROUTES`, and `NEXT_PUBLIC_EMAIL` should use this prefix. See [Security — Environment variable security](../security#environment-variable-security).
+
+## Microsoft Graph token refresh failure
+
+**Symptom**: "Failed to refresh Microsoft Graph API access token."
+
+**Fix**: See [Error on deployment — API fetch error](./error-on-deployment#api-fetch-error) for step-by-step recovery.
+
+<Callout>
+If none of these solve your problem, check the [VercelDrive GitHub Issues](https://github.com/Astear17/VercelDrive/issues) or open a new issue.
+</Callout>

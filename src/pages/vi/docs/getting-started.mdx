@@ -4,6 +4,20 @@ import { Callout } from 'nextra/components'
 
 Hướng dẫn này giúp bạn triển khai một VercelDrive riêng trên Vercel. Trước tiên hãy chọn mô hình quyền, sau đó tạo ứng dụng Microsoft, triển khai dự án, kết nối Redis và hoàn tất OAuth. Khi cần chi tiết hơn, mở thêm [Nâng cao](./advanced), [Tùy chỉnh cấu hình](./custom-configs) và [Cache](./cache).
 
+## Yêu cầu trước khi bắt đầu
+
+Trước khi bắt đầu, hãy đảm bảo bạn có:
+
+- **Tài khoản Microsoft** có quyền truy cập OneDrive
+- Quyền truy cập **Microsoft Azure / Entra** để tạo App Registration (hoặc nhờ quản trị IT)
+- **Tài khoản Vercel** (gói miễn phí vẫn được)
+- **Database Upstash Redis** (gói miễn phí vẫn được; tạo qua Vercel Integration)
+- Khoảng **15–20 phút** cho toàn bộ quá trình thiết lập
+
+Không cần công cụ phát triển cục bàn. Mọi thứ được cấu hình qua dashboard web và biến môi trường.
+
+Nếu muốn chạy VercelDrive ở máy cục bộ để phát triển, bạn cần Node.js 18+ và trình quản lý gói (nên dùng pnpm).
+
 ## 1. Chọn chế độ truy cập
 
 | Chế độ | Khi nào dùng | Quyền Microsoft Graph delegated | Biến cho tải lên |
@@ -14,6 +28,32 @@ Hướng dẫn này giúp bạn triển khai một VercelDrive riêng trên Verc
 <Callout type="warning">
   Nếu nâng cấp một bản triển khai chỉ đọc sang đọc/ghi, hãy xóa token OAuth cũ trong Redis/KV và xác thực lại. Token hiện có vẫn giữ phạm vi Microsoft Graph cũ cho đến khi được thay thế.
 </Callout>
+
+### Chế độ chỉ đọc
+
+**Bạn nhận được**: Duyệt, xem trước, tìm kiếm, chia sẻ và tải xuống tệp. Không có khả năng tải lên hoặc xóa.
+
+**Quyền Graph bắt buộc**: `User.Read`, `Files.Read.All`, `offline_access`
+
+**Biến môi trường**: Không đặt `UPLOAD_PASSWORD`. Endpoint tải lên bị vô hiệu hóa.
+
+### Chế độ đọc/ghi
+
+**Bạn nhận được**: Tất cả từ chế độ chỉ đọc, cộng thêm tải lên tệp và thư mục từ trình duyệt, và xóa tệp.
+
+**Quyền Graph bắt buộc**: `User.Read`, `Files.ReadWrite.All`, `offline_access`
+
+**Biến môi trường**: Đặt `UPLOAD_PASSWORD`. Có thể đặt thêm `UPLOAD_CONFLICT_BEHAVIOR` (`rename`, `replace` hoặc `fail`).
+
+**Bảo mật**: Thao tác tải lên và xóa yêu cầu `UPLOAD_PASSWORD` cho mỗi request. Mật khẩu được xác minh phía máy chủ.
+
+### Thư mục bảo vệ (tùy chọn, mọi chế độ)
+
+**Bạn nhận được**: Bảo vệ mật khẩu cho thư mục cụ thể. Khách truy cập phải nhập mật khẩu trước khi xem nội dung tệp.
+
+**Cấu hình**: Đặt `NEXT_PUBLIC_PROTECTED_ROUTES` (đường dẫn phân tách bằng dấu phẩy). Đặt file `.password` bên trong mỗi thư mục được bảo vệ trong OneDrive.
+
+**Lưu ý**: Thư mục bảo vệ không ẩn tên tệp khỏi danh sách hoặc tìm kiếm. Chỉ nội dung tệp bị hạn chế truy cập.
 
 ## 2. Tạo ứng dụng Microsoft Entra
 

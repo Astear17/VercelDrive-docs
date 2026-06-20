@@ -1,4 +1,4 @@
-# Grid view với preview đầy đủ
+# Grid View
 
 Grid view hiển thị thumbnail ảnh và video ngay trong danh sách thư mục, giúp duyệt các thư mục nhiều media trước khi mở từng tệp.
 
@@ -9,8 +9,14 @@ Grid view hiển thị thumbnail ảnh và video ngay trong danh sách thư mụ
 - Icon tệp cho định dạng không hỗ trợ hoặc không phải media
 - Preview đầy đủ sau khi mở một mục
 
+## Bố cục
+
+Gallery sử dụng bố cục masonry (waterfall) sắp xếp các mục vào cột dựa trên tỷ lệ khung hình tự nhiên. Ảnh dọc giữ nguyên chiều dọc, ảnh ngang giữ nguyên chiều ngang, và các mục ngắn hơn lấp đầy khoảng trống bên dưới. Điều này tránh các khoảng trống lớn mà lưới cố định tạo ra khi ảnh có tỷ lệ khác nhau.
+
 ## Khi nào nên dùng
 
 Dùng grid view cho thư mục ảnh, video và thư viện media hỗn hợp. Dùng list view khi cần xem tên tệp, thời gian và danh sách dày hơn.
 
 Trang preview vẫn mở trình xem ảnh hoặc video đầy đủ khi chọn tệp.
+
+![Grid view với bố cục masonry](../_images/showcase/grid-view-demo.png)

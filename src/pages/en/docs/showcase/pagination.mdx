@@ -1,7 +1,9 @@
-# Pagination
+# Auto-fetch
 
-OneDrive returns large folders in pages. VercelDrive automatically follows the API pagination in the background and appends each page as it arrives, so visitors do not need to click through every 200 items manually.
+OneDrive returns large folders in pages of up to 200 items. VercelDrive automatically fetches all pages in sequence — visitors do not need to click a button to load more files.
 
-The OneDrive API still limits each page to 200 items. While the next page is loading, VercelDrive shows progress in the folder footer.
+When the folder contains more items than a single API response, VercelDrive follows the API pagination link and loads the next page automatically. A progress indicator appears in the folder footer while additional pages are loading.
 
-![Pagination](../_images/showcase/pagination-demo.png)
+The OneDrive API still limits each page to 200 items.
+
+![Auto-fetch progress indicator](../_images/showcase/pagination-demo.png)

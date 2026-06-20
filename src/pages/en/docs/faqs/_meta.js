@@ -1,4 +1,5 @@
 export default {
+  "troubleshooting": "Troubleshooting",
   "error-on-deployment": "Error on deployment",
   "dont-pretend-to-be-owner": "Don't pretend to be the site owner"
 }

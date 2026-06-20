@@ -1,0 +1,68 @@
+import { Callout } from 'nextra/components'
+
+# Khắc phục sự cố
+
+Các vấn đề thường gặp và cách khắc phục.
+
+## Sai redirect URI OAuth
+
+**Triệu chứng**: Sau khi đăng nhập Microsoft, bạn thấy lỗi về redirect URI mismatch.
+
+**Khắc phục**: Trong Azure App Registration, đặt redirect URI thành `http://localhost` (chính xác). VercelDrive sử dụng giá trị này trong luồng OAuth.
+
+## Thiếu hoặc sai REDIS_URL
+
+**Triệu chứng**: Trang hiển thị 403 sau khi triển khai, hoặc token OAuth không được lưu.
+
+**Khắc phục**:
+
+1. Kết nối database Upstash Redis trong Vercel Storage.
+2. Xác nhận `REDIS_URL` đã được đặt trong biến môi trường production.
+3. Redeploy sau khi thêm biến.
+
+## Bị từ chối quyền tải lên
+
+**Triệu chứng**: Tải lên thất bại với "Microsoft Graph denied upload access."
+
+**Khắc phục**:
+
+1. Thêm quyền delegated `Files.ReadWrite.All` trong Azure.
+2. Cấp admin consent nếu cần.
+3. Xóa token đã lưu khỏi Redis (`access_token` và `refresh_token`).
+4. Redeploy và xác thực lại.
+
+Xem [Đặt lại token](../security#dat-lai-token) để biết chi tiết.
+
+## Token OAuth cũ sau khi thay đổi quyền
+
+**Triệu chứng**: Trang vẫn hoạt động ở chế độ chỉ đọc dù đã thêm `Files.ReadWrite.All`.
+
+**Khắc phục**: Thay đổi quyền không cập nhật token đã lưu. Xóa token cũ và xác thực lại. Xem [Bảo mật — Đặt lại token](../security#dat-lai-token).
+
+## Sai BASE_DIRECTORY
+
+**Triệu chứng**: "itemNotFound" hoặc "The resource could not be found."
+
+**Khắc phục**: Xác nhận thư mục tồn tại trong tài khoản OneDrive, bắt đầu bằng `/` và tài khoản OAuth có quyền truy cập. Xem [Lỗi khi triển khai](./error-on-deployment).
+
+## Không tìm thấy đường dẫn thư mục OneDrive
+
+**Triệu chứng**: 404 khi duyệt một thư mục cụ thể.
+
+**Khắc phục**: Đường dẫn OneDrive không phân biệt chữ hoa/thường nhưng phải khớp cấu trúc thư mục thực tế. Kiểm tra lỗi chính tả, khoảng trắng thừa và vấn đề mã hóa trong `BASE_DIRECTORY`.
+
+## Vô tình lộ biến NEXT_PUBLIC_
+
+**Triệu chứng**: Một biến secret hiển thị trong devtools trình duyệt.
+
+**Khắc phục**: Xóa tiền tố `NEXT_PUBLIC_` khỏi bất kỳ biến nào chứa secret. Chỉ `NEXT_PUBLIC_SITE_TITLE`, `NEXT_PUBLIC_PROTECTED_ROUTES` và `NEXT_PUBLIC_EMAIL` nên dùng tiền tố này. Xem [Bảo mật — Bảo mật biến môi trường](../security#bao-mat-bien-moi-truong).
+
+## Lỗi làm mới token Microsoft Graph
+
+**Triệu chứng**: "Failed to refresh Microsoft Graph API access token."
+
+**Khắc phục**: Xem [Lỗi khi triển khai — Lỗi fetch API](./error-on-deployment#loi-fetch-api) để biết các bước khôi phục.
+
+<Callout>
+Nếu không giải quyết được, hãy kiểm tra [VercelDrive GitHub Issues](https://github.com/Astear17/VercelDrive/issues) hoặc tạo issue mới.
+</Callout>

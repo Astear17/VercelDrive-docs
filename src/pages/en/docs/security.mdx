@@ -1,0 +1,117 @@
+import { Callout } from 'nextra/components'
+
+# Security
+
+This page explains how VercelDrive handles authentication, authorization, and secret management.
+
+## What visitors can access
+
+By default, anyone who can reach the deployed site can browse, preview, search, and download files from the configured `BASE_DIRECTORY`. No authentication is required for read-only access.
+
+If `UPLOAD_PASSWORD` is set, visitors must enter the password before uploading or deleting files. The password is verified server-side on every mutation request.
+
+## Read-only vs read/write scopes
+
+| Mode | Microsoft Graph permissions | What visitors can do |
+| --- | --- | --- |
+| Read-only | `User.Read`, `Files.Read.All`, `offline_access` | Browse, preview, search, download |
+| Read/write | `User.Read`, `Files.ReadWrite.All`, `offline_access` | All read-only actions plus upload and delete |
+
+The Microsoft Graph scope is set during Azure App Registration. Changing the scope after deployment requires clearing stored OAuth tokens and re-authenticating. See [Token reset](#token-reset).
+
+## Environment variable security
+
+### Server-side only (never exposed to the browser)
+
+These variables must **never** use the `NEXT_PUBLIC_` prefix:
+
+- `CLIENT_SECRET` — Microsoft Entra client secret
+- `REDIS_URL` — Redis connection string
+- `UPLOAD_PASSWORD` — upload/delete authorization password
+- `USER_PRINCIPAL_NAME` — OneDrive account email
+- `BASE_DIRECTORY` — root OneDrive folder path
+- `CLIENT_ID` — Azure app client ID
+
+Variables prefixed with `NEXT_PUBLIC_` are embedded in the client JavaScript bundle and visible to anyone who opens browser devtools.
+
+### Intentionally public
+
+- `NEXT_PUBLIC_SITE_TITLE` — site title
+- `NEXT_PUBLIC_PROTECTED_ROUTES` — protected folder paths (not secret; the passwords inside `.password` files are the secret)
+- `NEXT_PUBLIC_EMAIL` — contact email
+
+## Upload password
+
+When `UPLOAD_PASSWORD` is set:
+
+1. The user enters the password in the browser.
+2. The browser submits it to `/api/upload/auth`.
+3. The server compares the password using constant-time comparison (`crypto.timingSafeEqual`).
+4. On success, the server sets an HMAC-signed, HttpOnly, Secure cookie (`vd_upload_auth`) with a 30-minute TTL.
+5. All upload and delete API routes verify this cookie server-side before processing.
+
+The password is never stored in the browser, never sent as a query parameter, and never exposed in client-side JavaScript.
+
+<Callout>
+The UI password prompt is not the security boundary. The API route checks are. Even if someone bypasses the UI, they still need a valid server-side cookie.
+</Callout>
+
+## Protected folders vs upload password
+
+These are two separate systems:
+
+| Feature | Protected folders | Upload password |
+| --- | --- | --- |
+| Purpose | Restrict access to specific folders | Gate upload and delete actions globally |
+| Configuration | `NEXT_PUBLIC_PROTECTED_ROUTES` + `.password` files | `UPLOAD_PASSWORD` env var |
+| Password storage | Plain text `.password` file in OneDrive | Server-side environment variable |
+| Auth mechanism | SHA-256 hash comparison | HMAC-signed cookie |
+| Scope | Per-folder | Site-wide |
+
+Protected folders do **not** prevent file listing — file names are still visible in search results. Only file content access is restricted.
+
+## OAuth token storage
+
+VercelDrive stores Microsoft Graph OAuth tokens in Redis (Upstash):
+
+- `access_token` — short-lived, auto-refreshed
+- `refresh_token` — long-lived, used to obtain new access tokens
+
+Tokens are stored with the key prefix configured in `KV_PREFIX` (empty by default).
+
+## Token reset
+
+Clear stored tokens when:
+
+- You change Microsoft Graph permissions (e.g. from `Files.Read.All` to `Files.ReadWrite.All`)
+- The refresh token is revoked or expired
+- You see "Failed to refresh Microsoft Graph access token" errors
+
+### How to reset
+
+**Option 1: Upstash Console**
+
+1. Open [console.upstash.com](https://console.upstash.com)
+2. Select your Redis database
+3. Open Data Browser
+4. Delete `access_token` and `refresh_token` (include `KV_PREFIX` if set)
+
+**Option 2: API call**
+
+If you have a valid upload auth cookie:
+
+```http
+POST /api/upload/reset-auth-tokens
+```
+
+After clearing tokens, redeploy and complete the OAuth flow again.
+
+## Rate limiting
+
+Upload authentication and delete endpoints are rate-limited per IP address:
+
+- Progressive delay after failed attempts (250ms per attempt, up to 2 seconds)
+- HTTP 429 after 10 failed attempts in a 5 minutes
+- 15-minute block after hitting the limit
+
+Rate limiting is in-memory per serverless instance. It resets on cold start.

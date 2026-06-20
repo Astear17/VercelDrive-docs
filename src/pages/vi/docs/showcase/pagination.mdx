@@ -1,7 +1,9 @@
-# Phân trang (Pagination)
+# Tự động tải thêm (Auto-fetch)
 
-OneDrive trả về thư mục lớn theo từng trang. VercelDrive tự động gọi tiếp API pagination ở nền và nối từng trang khi tải xong, nên người dùng không cần bấm thủ công sau mỗi 200 mục.
+OneDrive trả về thư mục lớn theo từng trang, mỗi trang tối đa 200 mục. VercelDrive tự động tải tất cả các trang theo thứ tự — người dùng không cần nhấn nút để tải thêm tệp.
 
-OneDrive API vẫn giới hạn mỗi trang ở 200 mục. Khi trang tiếp theo đang tải, VercelDrive hiển thị tiến trình ở cuối danh sách thư mục.
+Khi thư mục chứa nhiều mục hơn một phản hồi API, VercelDrive theo liên kết phân trang API và tự động tải trang tiếp theo. Chỉ báo tiến trình xuất hiện ở cuối danh sách thư mục khi các trang bổ sung đang được tải.
 
-![Pagination](../_images/showcase/pagination-demo.png)
+OneDrive API vẫn giới hạn mỗi trang ở 200 mục.
+
+![Chỉ báo tiến trình tự động tải thêm](../_images/showcase/pagination-demo.png)
