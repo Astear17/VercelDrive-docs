@@ -44,8 +44,8 @@ export default {
     defaultTheme: 'dark'
   },
   color: {
-    hue: 150,
-    saturation: 45,
+    hue: 210,
+    saturation: 100,
     lightness: 42
   },
   footer: {

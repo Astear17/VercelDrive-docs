@@ -9,13 +9,13 @@
   margin: -2rem calc(50% - 50vw) 0;
   padding: 5rem max(2rem, calc((100vw - 72rem) / 2)) 3rem;
   background:
-    radial-gradient(circle at 50% 0%, rgba(46, 166, 106, 0.10), transparent 36rem),
+    radial-gradient(circle at 50% 0%, rgba(0, 120, 212, 0.10), transparent 36rem),
     linear-gradient(180deg, rgba(13, 17, 23, 0.02), transparent 32rem);
 }
 
 .dark .vd-home {
   background:
-    radial-gradient(circle at 50% 0%, rgba(46, 166, 106, 0.14), transparent 38rem),
+    radial-gradient(circle at 50% 0%, rgba(0, 120, 212, 0.14), transparent 38rem),
     linear-gradient(180deg, rgba(13, 17, 23, 0.95), rgba(13, 17, 23, 0.3) 40rem, transparent);
 }
 
@@ -38,7 +38,7 @@
 .vd-home-title {
   margin: 0;
   text-align: center;
-  font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+  font-family: 'Plus Jakarta Sans', 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
   font-size: clamp(2.5rem, 5vw, 4rem);
   font-weight: 700;
   line-height: 1.1;

@@ -9,11 +9,11 @@
   --text: #8b949e;
   --text-bright: #e6edf3;
   --text-dim: #484f58;
-  --accent: #2ea66a;
-  --accent-bright: #3fb950;
-  --accent-dim: rgba(46, 166, 106, 0.12);
-  --accent-hover: rgba(46, 166, 106, 0.06);
-  --link: #2ea66a;
+  --accent: #0078d4;
+  --accent-bright: #2899e5;
+  --accent-dim: rgba(0, 120, 212, 0.12);
+  --accent-hover: rgba(0, 120, 212, 0.06);
+  --link: #0078d4;
   --code-bg: #161b22;
 }
 
@@ -57,3 +57,5 @@ body {
   background: var(--accent);
   color: #fff;
 }
+
+@import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@500;600;700;800&display=swap');
