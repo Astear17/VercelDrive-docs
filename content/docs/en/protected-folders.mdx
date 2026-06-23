@@ -63,5 +63,9 @@ Yes, all seemingly secure protections come at a cost.
 
    Whether or not this exposes your password, protected files, personal information, etc., is all unknown. Use at your own risk.
 
-2. I personally cannot guarantee that this protection is impenetrable and fully secure. Hence, I would not recommend protecting sensitive information with this method. Think of this as an extra layer of annoyance to keep files you want to share with only the people you wish.
+2. **Search results no longer include files from protected directories.** File names inside protected folders are filtered out server-side for unauthenticated visitors. This prevents leaking file names through the search API.
+
+3. PDF files are now rendered using the browser's built-in PDF viewer instead of an external service, preventing auth tokens from leaking to third-party domains.
+
+4. I personally cannot guarantee that this protection is impenetrable and fully secure. Hence, I would not recommend protecting sensitive information with this method. Think of this as an extra layer of annoyance to keep files you want to share with only the people you wish.
 

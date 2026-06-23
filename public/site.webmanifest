@@ -1,6 +1,7 @@
 {
-  "name": "",
-  "short_name": "",
+  "name": "VercelDrive Docs",
+  "short_name": "VDDocs",
+  "description": "VercelDrive documentation",
   "icons": [
     {
       "src": "/android-chrome-192x192.png",

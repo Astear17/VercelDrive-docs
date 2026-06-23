@@ -52,4 +52,6 @@ Không cần mã hóa nội dung trong `.password`. Chuỗi bạn lưu trong fil
 Tính năng này phù hợp cho chia sẻ riêng tư cơ bản, nhưng không nên xem là lớp bảo vệ tuyệt đối cho dữ liệu nhạy cảm.
 
 1. Liên kết trực tiếp của tệp trong thư mục được bảo vệ có thể kèm tham số `&odpt=<hashed_token>`.
-2. Không nên đặt dữ liệu nhạy cảm cao trong thư mục công khai chỉ dựa vào `.password`.
+2. **Kết quả tìm kiếm không còn hiển thị tệp từ thư mục được bảo vệ.** Tên tệp bên trong thư mục được bảo vệ đã được lọc ở phía server cho khách truy cập chưa xác thực. Điều này ngăn chặn việc lộ tên tệp qua API tìm kiếm.
+3. Tệp PDF hiện được hiển thị bằng trình xem PDF tích hợp sẵn của trình duyệt thay vì dịch vụ bên ngoài, ngăn chặn token xác thực bị rò rỉ cho bên thứ ba.
+4. Không nên đặt dữ liệu nhạy cảm cao trong thư mục công khai chỉ dựa vào `.password`.

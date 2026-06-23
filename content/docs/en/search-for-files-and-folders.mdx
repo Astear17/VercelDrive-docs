@@ -1,0 +1,17 @@
+# Search for files and folders
+
+Native search is now supported! Use `Ctrl` or `⌘ + K` to open the search box, and `ESC` to close.
+
+![Search inside your OneDrive shared files with OneDrive's official API](../_images/features/search-for-files-and-folders.png)
+
+## Caveats
+
+- Limited support as the search provided by Microsoft Graph API is not ideal.
+- Extremely limited support for CJK search.
+
+## Security concerns
+
+- Search results from **protected directories are now filtered out** on the server side. File names inside protected folders will not appear in search results for unauthenticated visitors.
+- This means your protected folder contents (both file names and file contents) are no longer exposed through the search API.
+- If you need search to return results from a protected folder, the visitor must first authenticate by visiting that folder directly.
+
